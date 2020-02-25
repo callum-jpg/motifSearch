@@ -1,7 +1,7 @@
 import wget
 from Bio.Seq import Seq
 from Bio import SeqIO
-from Bio.Seq import generic_dna
+from Bio.Alphabet import IUPAC
 
 
 # Ensembl GRCh38 human genome. Chromosome 22 only (for faster testing)
@@ -26,10 +26,12 @@ for record in SeqIO.parse(input_file, 'fasta'):
 
 
 ## Counting motifs
-for record in SeqIO.parse(input_file, 'fasta'):
+# This is inaccuate - only counts TTTC motifs
+for record in SeqIO.parse(input_file, 'fasta', alphabet = IUPAC.unambiguous_dna):
     sequence = record.seq
     rev_sequence = record.seq.reverse_complement()
     ## Sequence.count must be converted to string for print
+    print(record.seq.alphabet)
     print("Record " + record.id + " has a sequence length of " + str(len(record.seq)) +
           ". \nIt contains " +
           str(sequence.count('TTTC' or
@@ -42,21 +44,49 @@ for record in SeqIO.parse(input_file, 'fasta'):
           'TATC')) + " TNTC motifs on the reverse complement."
           )
 
-
-
 ## Counting occurence of variations of TNTC motifs
 for record in SeqIO.parse(input_file, 'fasta'):
     sequence = record.seq
+    rev_sequence = record.seq.reverse_complement()
+    modified = (rev_sequence.count('TTTC') +
+                sequence.count('TGTC') +
+                sequence.count('TCTC') +
+                sequence.count('TATC') +
+                rev_sequence.count('TTTC') +
+                rev_sequence.count('TGTC') +
+                rev_sequence.count('TCTC') +
+                rev_sequence.count('TATC'))
+
     ## Sequence.count must be converted to string for print
-    print("Record " + record.id + " contains " +
+    print("Record " + record.id + " is " + str(len(record.seq)) + "bp long.\n"
+          " It contains " +
           str(sequence.count('TTTC')) + ' TTTC motifs, ' +
           str(sequence.count('TGTC')) + ' TGTC motifs, ' +
           str(sequence.count('TCTC')) + ' TCTC motifs, and ' +
-          str(sequence.count('TATC')) + ' TATC motifs.')
+          str(sequence.count('TATC')) + ' TATC motifs.\n' +
+          str(rev_sequence.count('TTTC')) + ' TTTC motifs, ' +
+          str(rev_sequence.count('TGTC')) + ' TGTC motifs, ' +
+          str(rev_sequence.count('TCTC')) + ' TCTC motifs, and ' +
+          str(rev_sequence.count('TATC')) + ' TATC motifs on the reverse complement')
+
+    # 1.5% of E. coli K12 genome can be modified by Taq DarT
+    ((modified / float(len(sequence) * 2)) * 100)
 
 
 # Motif search test
-test_seq = Seq("ATAGCTCTAGCTATGCTACGATACGTGTC", generic_dna)
+test_seq = Seq("ATAGCTCTAGCTATGCTACGATACGTGTC")
+test_seq2 = Seq("TGTCTGTCTGTC")
+motifs = ['TTTC', 'TGTC', 'TCTC', 'TATC']
+
+motifs[1 or 2 or 3 or 4]
+
+print(str(test_seq.count(motifs[1])))
+
+# Counts all motifs in seq
+# Will allow for code to be tidied up
+print(str(test_seq2.count(motifs[1 or 2 or 3 or 4])))
+
+
 
 print(str(test_seq.count('TTTC')) + ' TTTC motifs, ' +
       str(test_seq.count('TGTC')) + ' TGTC motifs, ' +
@@ -77,3 +107,15 @@ for index, record in enumerate(input_dna):
 
 
 
+
+
+
+
+for record in SeqIO.parse(input_file, 'fasta', alphabet = IUPAC.ambiguous_dna):
+    sequence = record.seq
+    rev_sequence = record.seq.reverse_complement()
+    ## Sequence.count must be converted to string for print
+    print(record.seq.alphabet)
+    print("Record " + record.id + " has a sequence length of " + str(len(record.seq)) +
+          ". \nIt contains " +
+          str(sequence.count('TNTC')) + " TNTC motifs and ")
