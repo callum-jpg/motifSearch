@@ -4,5 +4,5 @@ For my project I'm working with a bacterial toxin that modifies TNTC motifs of s
 This script aims to answer these questions.
 
 ### To do:
-- [] Find number of TNTC motifs in the human genome
-- [] Map these motifs to genemap(correct terminology?)
+- [ ] Find number of TNTC motifs in the human genome
+- [ ] Map these motifs to genemap(correct terminology?)
