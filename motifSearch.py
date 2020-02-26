@@ -94,3 +94,12 @@ for record in SeqIO.parse(input_file, 'fasta'):
         print(str(sequence.count(motifs[i])) + " " + str(motifs[i]))
         total_sites += sequence.count(motifs[i])
     print(str(total_sites) + " total sites")
+
+
+
+
+def percentage(percent, whole):
+    '''Calculates the percentage with float#
+    >>> percentage(50, 100)
+    >>> 50
+    '''
