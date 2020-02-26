@@ -77,13 +77,13 @@ test_seq = Seq("ATAGCTCTAGCTATGCTACGATACGTGTC")
 test_seq2 = Seq("TGTCTGTCTGTC")
 motifs = ['TTTC', 'TGTC', 'TCTC', 'TATC']
 
-motifs[1 or 2 or 3 or 4]
+motifs[0 or 1 or 2 or 3]
 
 print(str(test_seq.count(motifs[1])))
 
 # Counts all motifs in seq
 # Will allow for code to be tidied up
-print(str(test_seq2.count(motifs[1 or 2 or 3 or 4])))
+print(str(test_seq2.count(motifs[0 or 1 or 2 or 3])))
 
 
 
