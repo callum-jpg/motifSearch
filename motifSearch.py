@@ -78,8 +78,9 @@ test_seq2 = Seq("TGTCTGTCTGTC")
 motifs = ['TTTC', 'TGTC', 'TCTC', 'TATC']
 
 motifs[0 and 1 and 2 and 3]
+motifs[0, 1, 2, 3]
 
-print(str(test_seq.count(motifs[1])))
+print(str(test_seq.count(motifs)))
 
 # Counts all motifs in seq
 # Will allow for code to be tidied up
@@ -88,4 +89,5 @@ print(str(test_seq2.count(motifs[0 and 1 and 2 and 3])))
 for record in SeqIO.parse(input_file, 'fasta'):
     sequence = record.seq
     rev_sequence = record.seq.reverse_complement()
-    print(str(sequence.count(motifs[0 and 1 and 2 and 3])))
+    for i in range(0, len(motifs)):
+        print(str(sequence.count(motifs[i])))
