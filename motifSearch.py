@@ -2,6 +2,7 @@ import wget
 from Bio.Seq import Seq
 from Bio import SeqIO
 from Bio.Alphabet import IUPAC
+import pandas
 
 
 # Ensembl GRCh38 human genome. Chromosome 22 only (for faster testing)
@@ -75,35 +76,38 @@ for record in SeqIO.parse(input_file, 'fasta'):
     ((modified / float(len(sequence) * 2)) * 100)
 
 
-# Motif search test
-test_seq = Seq("ATAGCTCTAGCTATGCTACGATACGTGTC")
-test_seq2 = Seq("TGTCTGTCTGTC")
-motifs = ['TTTC', 'TGTC', 'TCTC', 'TATC']
-
-motifs[0 and 1 and 2 and 3]
-motifs[0, 1, 2, 3]
-
-print(str(test_seq.count(motifs)))
-
-# Counts all motifs in seq
-# Will allow for code to be tidied up
-print(str(test_seq2.count(motifs[0 and 1 and 2 and 3])))
-
-for record in SeqIO.parse(input_file, 'fasta'):
-    sequence = record.seq
-    rev_sequence = record.seq.reverse_complement()
-    total_sites = 0
-    for i in range(0, len(motifs)):
-        print(str(sequence.count(motifs[i])) + " " + str(motifs[i]))
-        total_sites += sequence.count(motifs[i])
-    print(str(total_sites) + " total sites")
-
-
-
-
 def percentage(percent, whole):
     '''Calculates the percentage with float#
     >>> percentage(50, 100)
     >>> 50.0
     '''
     return ((percent/float(whole)) * 100.0)
+
+
+# Motif search test
+test_seq = Seq("ATAGCTCTAGCTATGCTACGATACGTGTC")
+test_seq2 = Seq("TGTCTGTCTGTC")
+
+
+
+motifs = ['TTTC', 'TGTC', 'TCTC', 'TATC']
+for record in SeqIO.parse(input_file, 'fasta'):
+    sequence = record.seq
+    rev_sequence = record.seq.reverse_complement()
+    total_sites= 0
+    total_sites_rev = 0
+    for i in range(0, len(motifs)):
+        print(str(sequence.count(motifs[i])) + " " + str(motifs[i]))
+        total_sites += sequence.count(motifs[i])
+        print(str(rev_sequence.count(motifs[i])) + " " + str(motifs[i]))
+        total_sites_rev += rev_sequence.count(motifs[i])
+
+    print(str(total_sites) + " sites on complement")
+    print(str(total_sites_rev) + " sites on reverse complement")
+    print(str(total_sites + total_sites_rev) + " total sites for complement + reverse")
+    print(str(percentage((total_sites + total_sites_rev), len(sequence + rev_sequence))) +
+          "%% of genome can be modified")
+
+
+
+
