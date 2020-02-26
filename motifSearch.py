@@ -77,44 +77,15 @@ test_seq = Seq("ATAGCTCTAGCTATGCTACGATACGTGTC")
 test_seq2 = Seq("TGTCTGTCTGTC")
 motifs = ['TTTC', 'TGTC', 'TCTC', 'TATC']
 
-motifs[0 or 1 or 2 or 3]
+motifs[0 and 1 and 2 and 3]
 
 print(str(test_seq.count(motifs[1])))
 
 # Counts all motifs in seq
 # Will allow for code to be tidied up
-print(str(test_seq2.count(motifs[0 or 1 or 2 or 3])))
+print(str(test_seq2.count(motifs[0 and 1 and 2 and 3])))
 
-
-
-print(str(test_seq.count('TTTC')) + ' TTTC motifs, ' +
-      str(test_seq.count('TGTC')) + ' TGTC motifs, ' +
-      str(test_seq.count('TCTC')) + ' TCTC motifs, and ' +
-      str(test_seq.count('TATC')) + ' TATC motifs.')
-
-
-
-for index, record in enumerate(input_dna):
-    print("index %i, ID = %s, length %i, with %i features"
-          % (index, record.id, len(record.seq), len(record.features)))
-
-
-
-
-
-
-
-
-
-
-
-
-
-for record in SeqIO.parse(input_file, 'fasta', alphabet = IUPAC.ambiguous_dna):
+for record in SeqIO.parse(input_file, 'fasta'):
     sequence = record.seq
     rev_sequence = record.seq.reverse_complement()
-    ## Sequence.count must be converted to string for print
-    print(record.seq.alphabet)
-    print("Record " + record.id + " has a sequence length of " + str(len(record.seq)) +
-          ". \nIt contains " +
-          str(sequence.count('TNTC')) + " TNTC motifs and ")
+    print(str(sequence.count(motifs[0 and 1 and 2 and 3])))
