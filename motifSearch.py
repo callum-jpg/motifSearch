@@ -21,7 +21,10 @@ for record in SeqIO.parse(input_file, 'fasta'):
     print("Record " + record.id + ", length " + str(len(record.seq)) +
           "First/last 10 bases: " + record.seq[:10] + "..." + record.seq[-10:])
 
-
+# Returns record referring to chromosomes, Y, and mitochondrial DNA
+for record in SeqIO.parse('GRCh38_latest_genomic.fna', 'fasta'):
+    if 'NC_' in record.id:
+        print record.id
 
 
 ## Counting motifs
@@ -101,6 +104,6 @@ for record in SeqIO.parse(input_file, 'fasta'):
 def percentage(percent, whole):
     '''Calculates the percentage with float#
     >>> percentage(50, 100)
-    >>> 50
+    >>> 50.0
     '''
     return ((percent/float(whole)) * 100.0)
