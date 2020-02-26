@@ -6,7 +6,6 @@ from Bio.Alphabet import IUPAC
 
 # Ensembl GRCh38 human genome. Chromosome 22 only (for faster testing)
 wget.download('http://genomedata.org/rnaseq-tutorial/fasta/GRCh38/chr22_with_ERCC92.fa')
-
 # Download E. coli K12 gDNA
 wget.download('ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/005/845/GCF_000005845.2_ASM584v2/GCF_000005845.2_ASM584v2_genomic.fna.gz')
 
@@ -33,7 +32,7 @@ for record in SeqIO.parse(input_file, 'fasta', alphabet = IUPAC.unambiguous_dna)
     ## Sequence.count must be converted to string for print
     print(record.seq.alphabet)
     print("Record " + record.id + " has a sequence length of " + str(len(record.seq)) +
-          ". \nIt contains " +
+          "bp. \nIt contains " +
           str(sequence.count('TTTC' or
           'TGTC' or
           'TCTC' or
