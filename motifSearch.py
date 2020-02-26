@@ -103,3 +103,4 @@ def percentage(percent, whole):
     >>> percentage(50, 100)
     >>> 50
     '''
+    return ((percent/float(whole)) * 100.0)
