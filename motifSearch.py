@@ -89,27 +89,45 @@ test_seq2 = Seq("TGTCTGTCTGTC")
 
 
 
+motif_data = {}
 motifs = ['TTTC', 'TGTC', 'TCTC', 'TATC']
 for record in SeqIO.parse(input_file, 'fasta'):
     sequence = record.seq
     rev_sequence = record.seq.reverse_complement()
     total_sites= 0
     total_sites_rev = 0
+    motif_data['Record'] = record.id
     for i in range(0, len(motifs)):
+        # Build up total number of sites over motif interations
         total_sites += sequence.count(motifs[i])
         total_sites_rev += rev_sequence.count(motifs[i])
-        print(str(sequence.count(motifs[i])) + " " + str(motifs[i]))
-        print(str(rev_sequence.count(motifs[i])) + " " + str(motifs[i]))
+        # Add individual counts for each motif to data dict
+        motif_data[motifs[i] + " complement sites"] = sequence.count(motifs[i])
+        motif_data[motifs[i] + " reverse complement sites"] = rev_sequence.count(motifs[i])
+
+        #print(str(sequence.count(motifs[i])) + " " + str(motifs[i]))
+        #print(str(rev_sequence.count(motifs[i])) + " " + str(motifs[i]))
+
+    # At end of motif search, build dictionary with total sites
+    motif_data["Total complement sites"] = total_sites
+    motif_data["Total reverse complement sites"] = total_sites_rev
+
+    #print(str(total_sites) + " sites on complement")
+    #print(str(total_sites_rev) + " sites on reverse complement")
+    #print(str(total_sites + total_sites_rev) + " total sites for complement + reverse")
+    #print(str(fc.percentage((total_sites + total_sites_rev), len(sequence + rev_sequence))) +
+    #      "%% of genome can be modified")
 
 
-    print(str(total_sites) + " sites on complement")
-    print(str(total_sites_rev) + " sites on reverse complement")
-    print(str(total_sites + total_sites_rev) + " total sites for complement + reverse")
-    print(str(fc.percentage((total_sites + total_sites_rev), len(sequence + rev_sequence))) +
-          "%% of genome can be modified")
+
+pd.DataFrame(data=motif_data, index=[0])
+
+output = pd.DataFrame(data=motif_data, index=[0])
+
+output.to_csv('output.csv')
 
 
-
+t = {}
 t = {'record' : ['bacterial gDNA', 'human gDNA'], motifs[0] : [1, 200]}
 pd.DataFrame(data=t)
 
