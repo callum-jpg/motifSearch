@@ -111,6 +111,7 @@ for record in SeqIO.parse(input_file, 'fasta'):
     # At end of motif search, build dictionary with total sites
     motif_data["Total complement sites"] = total_sites
     motif_data["Total reverse complement sites"] = total_sites_rev
+    motif_data["Total number of sites"] = total_sites + total_sites_rev
 
     #print(str(total_sites) + " sites on complement")
     #print(str(total_sites_rev) + " sites on reverse complement")
