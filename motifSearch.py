@@ -1,10 +1,13 @@
 #!/usr/bin/env python
+import functions as fc
 import wget
 from Bio.Seq import Seq
 from Bio import SeqIO
 from Bio.Alphabet import IUPAC
 import pandas
 
+
+fc.percentage(50, 100)
 
 # Ensembl GRCh38 human genome. Chromosome 22 only (for faster testing)
 wget.download('http://genomedata.org/rnaseq-tutorial/fasta/GRCh38/chr22_with_ERCC92.fa')
@@ -101,7 +104,7 @@ for record in SeqIO.parse(input_file, 'fasta'):
     print(str(total_sites) + " sites on complement")
     print(str(total_sites_rev) + " sites on reverse complement")
     print(str(total_sites + total_sites_rev) + " total sites for complement + reverse")
-    print(str(percentage((total_sites + total_sites_rev), len(sequence + rev_sequence))) +
+    print(str(fc.percentage((total_sites + total_sites_rev), len(sequence + rev_sequence))) +
           "%% of genome can be modified")
 
 
