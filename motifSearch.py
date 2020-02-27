@@ -4,7 +4,7 @@ import wget
 from Bio.Seq import Seq
 from Bio import SeqIO
 from Bio.Alphabet import IUPAC
-import pandas
+import pandas as pd
 
 
 fc.percentage(50, 100)
@@ -96,10 +96,11 @@ for record in SeqIO.parse(input_file, 'fasta'):
     total_sites= 0
     total_sites_rev = 0
     for i in range(0, len(motifs)):
-        print(str(sequence.count(motifs[i])) + " " + str(motifs[i]))
         total_sites += sequence.count(motifs[i])
-        print(str(rev_sequence.count(motifs[i])) + " " + str(motifs[i]))
         total_sites_rev += rev_sequence.count(motifs[i])
+        print(str(sequence.count(motifs[i])) + " " + str(motifs[i]))
+        print(str(rev_sequence.count(motifs[i])) + " " + str(motifs[i]))
+
 
     print(str(total_sites) + " sites on complement")
     print(str(total_sites_rev) + " sites on reverse complement")
@@ -109,4 +110,6 @@ for record in SeqIO.parse(input_file, 'fasta'):
 
 
 
+t = {'record' : ['bacterial gDNA', 'human gDNA'], motifs[0] : [1, 200]}
+pd.DataFrame(data=t)
 
