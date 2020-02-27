@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import wget
 from Bio.Seq import Seq
 from Bio import SeqIO
