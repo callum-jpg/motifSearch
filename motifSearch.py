@@ -120,10 +120,7 @@ for record in SeqIO.parse(input_file, 'fasta'):
 
 
 
-pd.DataFrame(data=motif_data, index=[0])
-
 output = pd.DataFrame(data=motif_data, index=[0])
-
 output.to_csv('output.csv')
 
 
