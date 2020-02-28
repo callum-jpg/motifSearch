@@ -5,6 +5,7 @@ from Bio.Seq import Seq
 from Bio import SeqIO
 from Bio.Alphabet import IUPAC
 import pandas as pd
+import numpy as np
 
 
 fc.percentage(50, 100)
@@ -120,4 +121,81 @@ output.to_csv('output.csv')
 t = {}
 t = {'record' : ['bacterial gDNA', 'human gDNA'], motifs[0] : [1, 200]}
 pd.DataFrame(data=t)
+
+IUPAC = {'A': 'A',
+         'T': 'T',
+         'G': 'G',
+         'C': 'C',
+         'N': ['A', 'T', 'G', 'C'],
+         'R': ['A', 'G'],
+         'Y': ['C', 'T'],
+         'S': ['G', 'C'],
+         'W': ['A', 'T'],
+         'K': ['G', 'T'],
+         'M': ['A', 'C'],
+         'B': ['C', 'G', 'T'],
+         'D': ['A', 'G', 'T'],
+         'H': ['A', 'C', 'T'],
+         'V': ['A', 'C', 'G']
+         }
+
+def iupac_motif(motif_string):
+    """
+    Takes a motif in IUPAC format and generates a list of possible strings
+
+    >>> IUPAC_motif("TNTC")
+    >>> ['TTTC', 'TATC', 'TGTC', 'TCTC']
+    """
+
+
+
+
+
+# Find associated values with key
+IUPAC['N']
+# Find length of values for key 'N' - decides how many motifs to generate
+len(IUPAC['N'])
+# Print values for a specific key
+for i in IUPAC['N']:
+    print i
+# Generate unique motifs
+
+### Calculate  possible motifs for TN (4 total):
+
+# First, calculate possible combinations:
+fc.num_combinations('TN')
+
+
+
+
+
+for i in 'TN':
+    if len(IUPAC[i]) > 1:
+        print IUPAC[i]
+
+
+
+
+
+
+examp = (['TTTC', 'TATC', 'TCTC', 'TGTC'])
+a = np.array([[1, 2, 3], [4, 5, 6]])
+# i, j[start:end, start:end]
+a[:2, 1:3]
+a
+# Calculate possible motifs for TNN (16 total):
+
+a
+# i, j[start:end, start:end]
+a[:2, 1:3]
+# Pull 0th column
+a[:, 0]
+# Pull index 1 row
+a[1, :]
+
+
+
+
+
+
 
