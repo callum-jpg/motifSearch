@@ -105,22 +105,14 @@ for record in SeqIO.parse(input_file, 'fasta'):
         motif_data[motifs[i] + " complement sites"] = sequence.count(motifs[i])
         motif_data[motifs[i] + " reverse complement sites"] = rev_sequence.count(motifs[i])
 
-        #print(str(sequence.count(motifs[i])) + " " + str(motifs[i]))
-        #print(str(rev_sequence.count(motifs[i])) + " " + str(motifs[i]))
-
     # At end of motif search, build dictionary with total sites
     motif_data["Total complement sites"] = total_sites
     motif_data["Total reverse complement sites"] = total_sites_rev
     motif_data["Total number of sites"] = total_sites + total_sites_rev
 
-    #print(str(total_sites) + " sites on complement")
-    #print(str(total_sites_rev) + " sites on reverse complement")
-    #print(str(total_sites + total_sites_rev) + " total sites for complement + reverse")
-    #print(str(fc.percentage((total_sites + total_sites_rev), len(sequence + rev_sequence))) +
-    #      "%% of genome can be modified")
 
 
-
+# Data dict output
 output = pd.DataFrame(data=motif_data, index=[0])
 output.to_csv('output.csv')
 
