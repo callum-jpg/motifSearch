@@ -165,9 +165,18 @@ for i in IUPAC['N']:
 
 # First, calculate possible combinations:
 fc.num_combinations('TBV')
-
-# 4 possible nucleotides means j = max_iupac, (max dict value). i = fc.num_combinations / fc.max_iupac
 fc.max_iupac('TBV')
+
+
+
+
+
+# np.empty creates shape but doesn't use zeros - uses arbitrary data
+# Scrapping the idea of saving motifs in an array - will instead store in a list
+# For visualisation of all motifs, list could be coverted to array later.
+np.empty((fc.num_combinations('TBV')/fc.max_iupac('TBV'), fc.max_iupac('TBV')))
+
+np.empty((10, 10))
 
 
 
