@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import functions as fc
+
 import wget
 from Bio.Seq import Seq
 from Bio import SeqIO
@@ -164,9 +165,6 @@ for i in IUPAC['N']:
 
 # First, calculate possible combinations:
 fc.num_combinations('TN')
-
-
-
 
 
 for i in 'TN':

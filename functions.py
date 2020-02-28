@@ -1,5 +1,3 @@
-
-
 def percentage(percent, whole):
     '''Calculates the percentage with float#
     >>> percentage(50, 100)
