@@ -1,3 +1,5 @@
+from script import IUPAC_dict
+
 def percentage(percent, whole):
     '''Calculates the percentage with float#
     >>> percentage(50, 100)
@@ -18,5 +20,5 @@ def num_combinations(motif):
     """
     combi = 1
     for i in motif:
-        combi = combi * len(IUPAC[i])
+        combi = combi * len(IUPAC_dict[i])
     return combi

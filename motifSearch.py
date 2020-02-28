@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import functions as fc
-
+from script import IUPAC_dict
 import wget
 from Bio.Seq import Seq
 from Bio import SeqIO
@@ -8,7 +8,7 @@ from Bio.Alphabet import IUPAC
 import pandas as pd
 import numpy as np
 
-
+fc.num_combinations('TN')
 fc.percentage(50, 100)
 
 # Ensembl GRCh38 human genome. Chromosome 22 only (for faster testing)
@@ -51,8 +51,6 @@ for record in SeqIO.parse(input_file, 'fasta', alphabet = IUPAC.unambiguous_dna)
           'TGTC' or
           'TCTC' or
           'TATC')) + " TNTC motifs on the reverse complement."
-          )
-
 ## Counting occurence of variations of TNTC motifs
 for record in SeqIO.parse(input_file, 'fasta'):
     sequence = record.seq
