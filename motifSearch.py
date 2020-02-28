@@ -10,6 +10,7 @@ import numpy as np
 
 fc.num_combinations('TN')
 fc.percentage(50, 100)
+fc.max_iupac('N')
 
 # Ensembl GRCh38 human genome. Chromosome 22 only (for faster testing)
 wget.download('http://genomedata.org/rnaseq-tutorial/fasta/GRCh38/chr22_with_ERCC92.fa')
@@ -51,7 +52,7 @@ for record in SeqIO.parse(input_file, 'fasta', alphabet = IUPAC.unambiguous_dna)
           'TGTC' or
           'TCTC' or
           'TATC')) + " TNTC motifs on the reverse complement.")
-    
+
 ## Counting occurence of variations of TNTC motifs
 for record in SeqIO.parse(input_file, 'fasta'):
     sequence = record.seq
@@ -163,17 +164,24 @@ for i in IUPAC['N']:
 ### Calculate  possible motifs for TN (4 total):
 
 # First, calculate possible combinations:
-fc.num_combinations('TN')
+fc.num_combinations('TBV')
+
+# 4 possible nucleotides means j = max_iupac, (max dict value). i = fc.num_combinations / fc.max_iupac
+fc.max_iupac('TBV')
+
+
 
 
 for i in 'TN':
-    if len(IUPAC[i]) > 1:
-        print IUPAC[i]
+    if len(IUPAC_dict[i]) > 1:
+        print IUPAC_dict[i]
+
+max([len(IUPAC_dict[i]) for i in 'TN'])
 
 
 
 
-
+max([1, 2, 3, 4])
 
 examp = (['TTTC', 'TATC', 'TCTC', 'TGTC'])
 a = np.array([[1, 2, 3], [4, 5, 6]])

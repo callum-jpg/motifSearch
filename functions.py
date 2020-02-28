@@ -22,3 +22,12 @@ def num_combinations(motif):
     for i in motif:
         combi = combi * len(IUPAC_dict[i])
     return combi
+
+def max_iupac(motif):
+    """
+    Returns the maximum number of nucleotides that an IUPAC denotes
+
+    >>> max_iupac('N')
+    >>> 4
+    """
+    return max([len(IUPAC_dict[i]) for i in motif])
