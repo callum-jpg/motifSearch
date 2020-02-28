@@ -50,7 +50,8 @@ for record in SeqIO.parse(input_file, 'fasta', alphabet = IUPAC.unambiguous_dna)
           str(rev_sequence.count('TTTC' or
           'TGTC' or
           'TCTC' or
-          'TATC')) + " TNTC motifs on the reverse complement."
+          'TATC')) + " TNTC motifs on the reverse complement.")
+    
 ## Counting occurence of variations of TNTC motifs
 for record in SeqIO.parse(input_file, 'fasta'):
     sequence = record.seq
