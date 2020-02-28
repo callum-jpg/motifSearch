@@ -167,8 +167,18 @@ for i in IUPAC['N']:
 fc.num_combinations('TBV')
 fc.max_iupac('TBV')
 
+tmotif = 'TN'
+tlist = []
+for i in range(0, fc.num_combinations(tmotif)):
+    for j in range(1, fc.max_iupac(tmotif)):
+        print j
+        tlist.append(IUPAC_dict[tmotif[0]] + IUPAC_dict[tmotif[1]])
 
 
+# If using append, generate the full motif within the append function
+# This will require the IUPAC_dict.value position
+# This will require any values below max(IUPAC_dict.values()) to be repeated
+tlist.append("T" + "T")
 
 
 # np.empty creates shape but doesn't use zeros - uses arbitrary data
