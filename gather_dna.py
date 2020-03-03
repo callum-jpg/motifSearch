@@ -13,3 +13,8 @@ input_seq_iterator = SeqIO.parse('GRCh38_latest_genomic.fna', 'fasta')
 chromosomes = [record for record in input_seq_iterator
                if 'NC_00' in record.id]
 SeqIO.write(chromosomes, "chr1-23+Y.fna", "fasta")
+
+
+input_seq_iterator = SeqIO.parse('chr1-23+Y.fna', 'fasta')
+records = [record.id for record in input_seq_iterator]
+chr_name = [records[i][7:9] for i, j in enumerate(records)]
