@@ -3,9 +3,7 @@ import functions as fc
 import wget
 from Bio import Seq
 from Bio import SeqIO
-from Bio.Alphabet import IUPAC
 import pandas as pd
-import numpy as np
 
 
 IUPAC_dict = Seq.IUPAC.IUPACData.ambiguous_dna_values
