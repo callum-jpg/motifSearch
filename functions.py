@@ -1,4 +1,7 @@
 from itertools import product
+from Bio import Seq
+
+IUPAC_dict = Seq.IUPAC.IUPACData.ambiguous_dna_values
 
 def percentage(percent, whole):
     '''Calculates the percentage with float#
