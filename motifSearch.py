@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+import matplotlib
+matplotlib.use("TkAgg")
 import functions as fc
 from Bio import SeqIO
 import pandas as pd
@@ -40,7 +42,7 @@ seq = ''
 for record in SeqIO.parse('k12-gdna.fna', 'fasta'):
 	seq = record.seq
 # Make a smaller, faster processing sequence
-seq_sm = seq[0:((len(seq))/1000)]
+seq_sm = seq[:int(((len(seq))/1000))]
 len(seq_sm)
 
 # Count positions of a single letter
@@ -53,11 +55,7 @@ test_dict = {'A': [i for i, j in enumerate(seq_sm) if j == 'A'],
 # OK-ish plot. Unsure if at all useful
 for k, v in test_dict.items():
 	plt.xlim(0, len(seq_sm))
-	testing = sns.kdeplot(test_dict[k],
-	             bw=0.02,
-	                      label=k)
-
-
+	sns.kdeplot(test_dict[k], bw=0.02, label=k)
 
 
 # Make 4x subplots for each nucleotide
