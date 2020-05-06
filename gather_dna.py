@@ -44,9 +44,7 @@ extract_gdna('GCF_000195955.2_ASM19595v2_genomic.fna', 'NC_000962.3', 'mtb-gdna.
 # Check sequence length for records in fasta
 # Make into a function?
 for record in SeqIO.parse('all-bac-corrected.fna', 'fasta'):
-    print(
-        #record.id, len(record.seq),
-        record.description)
+    print(record.id, len(record.seq))
 
 
 
