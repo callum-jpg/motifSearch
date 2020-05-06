@@ -75,7 +75,7 @@ def motifs_in_fasta(fasta, motif):
         motif_data[output_cols[3]].append((total_sites + total_sites_rev))
         motif_data[output_cols[4]].append(percentage((total_sites + total_sites_rev),
                                                         (len(sequence) + len(rev_sequence))))
-        motif_data[output_cols[6]].append(str(motif))
+        motif_data[output_cols[5]].append(str(motif))
 
 
     return motif_data
