@@ -7,6 +7,10 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+# For realoding
+import importlib
+importlib.reload(fc)
+
 #fc.percentage(50, 100)
 #fc.iupac_to_dna('TNTM')
 
@@ -24,8 +28,29 @@ plt.bar(output['Chromosome'].values, output['Perc DNA modified (total)'].values)
 
 
 ### Bacterial gDNA
-output = pd.DataFrame(data=fc.motifs_in_fasta('k12-gdna.fna', 'TNTC'))
+output = pd.DataFrame(data=fc.motifs_in_fasta('all-bac-corrected.fna', 'TNTC'))
 output.to_csv('output.csv')
+
+plt.bar(output['Record'].values, output['Perc DNA modified (total)'].values)
+plt.suptitle(output['motif seq'][1], fontsize=25)
+
+
+#werks
+mots = ['TNTC', 'TNTM', 'TYT', 'TTTH']
+
+fig, axes = plt.subplots(nrows=2, ncols=2, sharey=True)
+fig.subplots_adjust(hspace=0.5)
+#fig.setp(axes.xaxis.get_majorticklabels(), rotation=45)
+for i, ax in enumerate(axes.flat):
+	output = pd.DataFrame(data=fc.motifs_in_fasta('all-bac-corrected.fna', str(mots[i])))
+	ax.bar(output['Record'].values, output['Perc DNA modified (total)'].values)
+	ax.set(title=mots[i])
+
+	print(i, ax)
+
+
+
+
 
 
 # Calculating position of each DNA motif
