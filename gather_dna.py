@@ -1,6 +1,43 @@
 #!/usr/bin/env python
 import wget
+import os
 from Bio import SeqIO
+from Bio import Entrez
+
+
+
+Entrez.email = "john.smith@john.com"
+
+
+
+def download_dna(id, filename):
+    """
+    Takes an NCBI accession number from the nucleotide database and downloads the DNA
+    in FASTA format. Saves as the given filename. Does not overwrite files with the same
+    name.
+
+    >>> download_dna('NC_000913.3', 'ecoli_k12_gdna.fa')
+    :param id:
+    :param filename:
+    :return:
+    """
+    # Check if the same filename exists
+    if not os.path.isfile(filename):
+        # Fetch ID from Entrez NCBI in fasta format as a handle
+        # Handle is a wrapper around the text information retrived from Entrez/NCBI
+        with Entrez.efetch(db="nucleotide", id=id, rettype="fasta", retmode="text") as handle:
+            with open(filename, "w") as output_handle:
+                # .read() reads the entire handle. .readline() would, obviously, read line by line
+                output_handle.write(handle.read())
+            print('\'{}\' saved'.format(filename))
+    else:
+        print('Filename \'{}\' already exists'.format(filename))
+
+id = 'NC_000913.3'
+filename = 'test.fa'
+download_dna(id, filename)
+
+
 
 # Ensembl GRCh38 human genome. Chromosome 22 only (for faster testing)
 wget.download('http://genomedata.org/rnaseq-tutorial/fasta/GRCh38/chr22_with_ERCC92.fa')
