@@ -28,27 +28,96 @@ plt.bar(output['Chromosome'].values, output['Perc DNA modified (total)'].values)
 
 
 ### Bacterial gDNA
-output = pd.DataFrame(data=fc.motifs_in_fasta('all-bac-corrected.fna', 'TNTC'))
+output = pd.DataFrame(data=fc.motifs_in_fasta('downloaded_DNA/all-bac-renamed.fa', 'TNTC'))
 output.to_csv('output.csv')
 
 plt.bar(output['Record'].values, output['Perc DNA modified (total)'].values)
 plt.suptitle(output['motif seq'][1], fontsize=25)
 
 
-#werks
+# Create 2x2 plot for 4 searched motifs
+# Calculates motif data in each loop - calculate data before loop?
 mots = ['TNTC', 'TNTM', 'TYT', 'TTTH']
 
 fig, axes = plt.subplots(nrows=2, ncols=2, sharey=True)
 fig.subplots_adjust(hspace=0.5)
-#fig.setp(axes.xaxis.get_majorticklabels(), rotation=45)
+#axes.setp(axes.xaxis.get_majorticklabels(), rotation=45)
+#plt.xticks(rotation=45)
 for i, ax in enumerate(axes.flat):
-	output = pd.DataFrame(data=fc.motifs_in_fasta('all-bac-corrected.fna', str(mots[i])))
+	output = pd.DataFrame(data=fc.motifs_in_fasta('downloaded_DNA/all-bac-renamed.fa', str(mots[i])))
 	ax.bar(output['Record'].values, output['Perc DNA modified (total)'].values)
 	ax.set(title=mots[i])
-
 	print(i, ax)
+plt.xticks(rotation=45) # only rotates labs on last plot
+#axes.setp(plt.xticks()[0], rotation=45)
+plt.show()
 
 
+
+
+
+
+# Calculating data before loop
+mots = ['TNTC', 'TNTM', 'TYT', 'TTTH']
+output = pd.DataFrame()
+for i, _ in enumerate(mots):
+	print(i)
+	df = pd.DataFrame(data=fc.motifs_in_fasta('downloaded_DNA/all-bac-renamed.fa', str(mots[i])))
+	output = output.append(df)
+output.to_csv('output.csv')
+
+
+
+# Plot full dataset in one
+# Doesn't work...
+input_data = pd.read_csv('output.csv')
+
+
+fig, axes = plt.subplots(nrows=2, ncols=2, sharey=True)
+
+axes = axes.flatten()
+for i, j in enumerate(input_data['motif seq'].unique()):
+	#print(i, j)
+	subset = input_data[input_data['motif seq'] == str(j)]
+	t = subset[['Record', 'Perc DNA modified (total)']]
+	axes.plot(subset['Record', 'Perc DNA modified (total)'], kind='bar')
+
+
+
+# Another attempt, same as old.
+input_data = pd.read_csv('output.csv')
+fig, axes = plt.subplots(nrows=2, ncols=2)
+fig.subplots_adjust(hspace=0.5)
+keys = input_data['motif seq'].unique()
+for ax, name in zip(axes.flatten(), keys):
+	loop_data = input_data[input_data['motif seq'] == str(name)]
+	#print(loop_data)
+	ax.bar(loop_data['Record'].values, loop_data['Perc DNA modified (total)'].values)
+
+# https://www.dataquest.io/blog/tutorial-advanced-for-loops-python-pandas/
+input_data.values.T
+
+
+
+# Trying again...
+input_data = pd.read_csv('output.csv')
+
+fig, axes = plt.subplots(nrows=2, ncols=2)
+keys = input_data['motif seq'].unique()
+for i, j in enumerate(keys):
+	loop_data = input_data[input_data['motif seq'] == str(name)]
+	loop_data_1 = input_data[['Record', 'Perc DNA modified (total)']]
+	#print(loop_data_1)
+	loop_data_1.plot(kind='bar', ax=axes[i])
+
+t = input_data[['Record', 'motif seq']]
+
+t = input_data[input_data['Perc DNA modified (total)'], input_data['Record'], input_data['motif seq' == 'TNTC']]
+
+input_data[input_data['Record'] == 'P.aeruginosa']
+
+pd.Series(t)
+pd.Series(t, index=range(0, len(input_data)))
 
 
 
