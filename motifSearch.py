@@ -1,11 +1,17 @@
 #!/usr/bin/env python
 import matplotlib
-matplotlib.use("TkAgg")
+matplotlib.use("TkAgg") # Backend to use for PyCharm interactive plots
+matplotlib.use("GTK3Agg") # Backend to use for savefig with properly scaled DPI
+
 import functions as fc
 from Bio import SeqIO
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import numpy as np
+
+plt.plot([1,2,3])
+plt.show()
 
 # For realoding
 import importlib
@@ -25,38 +31,7 @@ output['Chromosome'] = chr_name # Append new column with chromosome numbers
 plt.bar(output['Chromosome'].values, output['Perc DNA modified (total)'].values)
 
 
-
-
-### Bacterial gDNA
-output = pd.DataFrame(data=fc.motifs_in_fasta('downloaded_DNA/all-bac-renamed.fa', 'TNTC'))
-output.to_csv('output.csv')
-
-plt.bar(output['Record'].values, output['Perc DNA modified (total)'].values)
-plt.suptitle(output['motif seq'][1], fontsize=25)
-
-
-# Create 2x2 plot for 4 searched motifs
-# Calculates motif data in each loop - calculate data before loop?
-mots = ['TNTC', 'TNTM', 'TYT', 'TTTH']
-
-fig, axes = plt.subplots(nrows=2, ncols=2, sharey=True)
-fig.subplots_adjust(hspace=0.5)
-#axes.setp(axes.xaxis.get_majorticklabels(), rotation=45)
-#plt.xticks(rotation=45)
-for i, ax in enumerate(axes.flat):
-	output = pd.DataFrame(data=fc.motifs_in_fasta('downloaded_DNA/all-bac-renamed.fa', str(mots[i])))
-	ax.bar(output['Record'].values, output['Perc DNA modified (total)'].values)
-	ax.set(title=mots[i])
-	print(i, ax)
-plt.xticks(rotation=45) # only rotates labs on last plot
-#axes.setp(plt.xticks()[0], rotation=45)
-plt.show()
-
-
-
-
-
-
+# Bacterial gDNA
 # Calculating data before loop
 mots = ['TNTC', 'TNTM', 'TYT', 'TTTH']
 output = pd.DataFrame()
@@ -67,57 +42,44 @@ for i, _ in enumerate(mots):
 output.to_csv('output.csv')
 
 
-
-# Plot full dataset in one
-# Doesn't work...
-input_data = pd.read_csv('output.csv')
-
-
-fig, axes = plt.subplots(nrows=2, ncols=2, sharey=True)
-
-axes = axes.flatten()
-for i, j in enumerate(input_data['motif seq'].unique()):
-	#print(i, j)
-	subset = input_data[input_data['motif seq'] == str(j)]
-	t = subset[['Record', 'Perc DNA modified (total)']]
-	axes.plot(subset['Record', 'Perc DNA modified (total)'], kind='bar')
-
-
-
-# Another attempt, same as old.
-input_data = pd.read_csv('output.csv')
-fig, axes = plt.subplots(nrows=2, ncols=2)
-fig.subplots_adjust(hspace=0.5)
-keys = input_data['motif seq'].unique()
-for ax, name in zip(axes.flatten(), keys):
-	loop_data = input_data[input_data['motif seq'] == str(name)]
-	#print(loop_data)
-	ax.bar(loop_data['Record'].values, loop_data['Perc DNA modified (total)'].values)
-
-# https://www.dataquest.io/blog/tutorial-advanced-for-loops-python-pandas/
-input_data.values.T
-
-
-
-# Trying again...
+# Bacterial gDNA
+mots = ['TNTC', 'TNTM', 'TYT', 'TTTH']
 input_data = pd.read_csv('output.csv')
 
 fig, axes = plt.subplots(nrows=2, ncols=2)
-keys = input_data['motif seq'].unique()
-for i, j in enumerate(keys):
-	loop_data = input_data[input_data['motif seq'] == str(name)]
-	loop_data_1 = input_data[['Record', 'Perc DNA modified (total)']]
-	#print(loop_data_1)
-	loop_data_1.plot(kind='bar', ax=axes[i])
+for i, ax in enumerate(axes.flatten()):
+	subset = input_data[input_data['motif seq'] == str(mots[i])]
+	ax.bar(subset['Record'], subset['Perc DNA modified (total)'])
+	ax.set_ylim([0, 3])
+	ax.set_xticklabels(labels=subset['Record'], rotation=45, ha="right", rotation_mode="anchor")
+	ax.set_title('\'{0}\' motif'.format(mots[i]))
+	# Remove plot borders
+	ax.spines["top"].set_visible(False)
+	ax.spines["bottom"].set_visible(False)
+	ax.spines["right"].set_visible(False)
+	ax.spines["left"].set_visible(False)
+	# Tick marks
+	ax.get_yaxis().tick_left()
+	ax.tick_params(axis="both", which="both", bottom=False, left=False)
+	# Display yticks with intervals of 1. Alternative oneliner: ax.set_yticks(ax.get_yticks()[::2])
+	ymin, ymax = ax.get_ylim()
+	ax.set_yticklabels(np.arange(ymin, ymax+1, 1, dtype=np.int))
+	ax.set_ylabel('% gDNA modified')
+fig.suptitle('This is the figure title')
+fig.tight_layout(pad=0.1, rect=[0, 0.03, 1, 0.9])
+fig.savefig("some.png", dpi=300)
 
-t = input_data[['Record', 'motif seq']]
 
-t = input_data[input_data['Perc DNA modified (total)'], input_data['Record'], input_data['motif seq' == 'TNTC']]
+# ONE PLOT ONLY
+input_data = pd.read_csv('output.csv')
+subset = input_data[input_data['motif seq'] == 'TNTC']
+#subset['Record']
+#subset['Perc DNA modified (total)']
+plt.bar(subset['Record'], subset['Perc DNA modified (total)'])
 
-input_data[input_data['Record'] == 'P.aeruginosa']
 
-pd.Series(t)
-pd.Series(t, index=range(0, len(input_data)))
+
+# Plot % gDNA modified vs gDNA length
 
 
 
