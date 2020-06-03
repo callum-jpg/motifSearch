@@ -54,7 +54,8 @@ def motifs_in_fasta(fasta, motif):
                    "Total reverse complement sites",
                    "Total number of sites",
                    "Perc DNA modified (total)",
-                   "motif seq"]
+                   "motif seq",
+                   "record length"]
     # Populate dict with empty lists
     for i in output_cols:
         motif_data[i] = []
@@ -78,6 +79,7 @@ def motifs_in_fasta(fasta, motif):
         motif_data[output_cols[4]].append(percentage((total_sites + total_sites_rev),
                                                         (len(sequence) + len(rev_sequence))))
         motif_data[output_cols[5]].append(str(motif))
+        motif_data[output_cols[6]].append(len(sequence))
 
 
     return motif_data
