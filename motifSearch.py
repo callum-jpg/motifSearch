@@ -36,7 +36,7 @@ plt.bar(output['Chromosome'].values, output['Perc DNA modified (total)'].values)
 mots = ['TNTC', 'TNTM', 'TYT', 'TTTH']
 output = pd.DataFrame()
 for i, _ in enumerate(mots):
-	print(i)
+	print("Counting sites for {0} motif".format(mots[i]))
 	df = pd.DataFrame(data=fc.motifs_in_fasta('downloaded_DNA/all-bac-renamed.fa', str(mots[i])))
 	output = output.append(df)
 output.to_csv('output.csv')
@@ -45,7 +45,8 @@ output.to_csv('output.csv')
 # Bacterial gDNA
 mots = ['TNTC', 'TNTM', 'TYT', 'TTTH']
 input_data = pd.read_csv('output.csv')
-# Colours for plotting. From Solarized
+
+# Colours for plotting. From Solarized palette
 colour_palette = [(211, 54, 130), (108, 113, 196), (38, 139, 210), (42, 161, 152)]
 plot_colours = colour_palette
 for i in range(len(colour_palette)):
@@ -54,7 +55,7 @@ for i in range(len(colour_palette)):
 	plot_colours[i] = (r / 255, g / 255, b / 255)
 
 
-fig, axes = plt.subplots(nrows=2, ncols=2, sharey=True, sharex=True)
+fig, axes = plt.subplots(nrows=2, ncols=2, sharey=False, sharex=True)
 for i, ax in enumerate(axes.flatten()):
 	subset = input_data[input_data['motif seq'] == str(mots[i])]
 	ax.bar(subset['Record'], subset['Perc DNA modified (total)'], color=plot_colours[i])
@@ -81,11 +82,7 @@ fig.tight_layout(rect=[0, 0.03, 1, 0.9]) # Call tight_layout last
 
 matplotlib.use("TkAgg") # Backend to use for PyCharm interactive plots
 matplotlib.use("GTK3Agg") # Backend to use for savefig with properly scaled DPI
-fig.savefig("plots/colours - common y label.png", dpi=300)
-
-
-
-
+fig.savefig("plots/colours - common x+y - all numbers presented.png", dpi=300)
 
 
 # ONE PLOT ONLY
@@ -96,8 +93,80 @@ subset = input_data[input_data['motif seq'] == 'TNTC']
 plt.bar(subset['Record'], subset['Perc DNA modified (total)'])
 
 
+# Bar plot of gDNA lengths
+input_data = pd.read_csv('output.csv')
+subset = input_data[input_data['motif seq'] == 'TNTC']
+
+fig, ax = plt.subplots()
+ax.bar(subset['Record'], subset['record length'], color=plot_colours[1])
+ax.set_title('gDNA length between species')
+ax.set_xticklabels(labels=subset['Record'], rotation=45, ha="right", rotation_mode="anchor")
+ax.spines["top"].set_visible(False)
+ax.spines["right"].set_visible(False)
+ax.get_yaxis().tick_left()
+ax.tick_params(axis="both", which="both", bottom=False, left=False)
+# Display yticks with intervals of 1. Alternative oneliner: ax.set_yticks(ax.get_yticks()[::2])
+ax.set_ylim([0, 7e6])
+ymin, ymax = ax.get_ylim()
+ax.set_yticklabels(np.arange(ymin, ymax + 1e6, 1e6, dtype=np.int) / 1e6)
+ax.set_ylabel('gDNA length (Mb)')
+fig.tight_layout(rect=[0, 0.03, 1, 0.9]) # Call tight_layout last
+
+matplotlib.use("TkAgg") # Backend to use for PyCharm interactive plots
+matplotlib.use("GTK3Agg") # Backend to use for savefig with properly scaled DPI
+fig.savefig("plots/gDNA length between species.png", dpi=300)
+
 
 # Plot % gDNA modified vs gDNA length
+# Single plot for a single motif. Record length vs % gDNA modified
+input_data = pd.read_csv('output.csv')
+subset = input_data[input_data['motif seq'] == 'TNTC']
+
+from sklearn.linear_model import LinearRegression
+
+
+linear_reg = LinearRegression()
+fig, axes = plt.subplots(nrows=2, ncols=2, sharey=False, sharex=True)
+for i, ax in enumerate(axes.flatten()):
+	subset = input_data[input_data['motif seq'] == str(mots[i])]
+	# Reshape data for LinearRegression()
+	x = np.reshape(subset['record length'].values, (len(subset['record length'].values), 1))
+	y = np.reshape(subset['Perc DNA modified (total)'].values, (len(subset['Perc DNA modified (total)'].values), 1))
+	# Linear regression predict
+	linear_reg.fit(x, y)
+	y_predict = linear_reg.predict(x) # Prediction holder
+	# Plot
+	ax.scatter(x, y)
+	ax.plot(x, y_predict, color='red')  # Plot prediction
+	# Format plot
+	ax.set_title('\'{0}\' motif'.format(mots[i]))
+	ax.spines["top"].set_visible(False)
+	ax.spines["right"].set_visible(False)
+	ax.get_yaxis().tick_left()
+	ax.tick_params(axis="both", which="both", bottom=False, left=False)
+	# Display yticks with intervals of 1. Alternative oneliner: ax.set_yticks(ax.get_yticks()[::2])
+	ax.set_ylim([0, 3])
+	ymin, ymax = ax.get_ylim()
+	ax.set_yticklabels(np.arange(ymin, ymax+1, 1, dtype=np.int))
+	# # x axis format
+	ax.set_xlim([2e6, 6.5e6])
+	xmin, xmax = ax.get_xlim()
+	ax.set_xticklabels(np.arange(xmin, xmax + 1e6, 1e6, dtype=np.int) / 1e6)
+fig.text(0.5, 0.04, 'gDNA length (Mb)', ha='center') # Common x axis label
+fig.text(0.01, 0.5, '% gDNA modified', va='center', rotation='vertical')  # Common Y axis label
+fig.tight_layout(rect=[0.02, 0.05, 1, 0.9]) # Call tight_layout last
+
+matplotlib.use("TkAgg") # Backend to use for PyCharm interactive plots
+matplotlib.use("GTK3Agg") # Backend to use for savefig with properly scaled DPI
+fig.savefig("plots/gDNA length vs % gDNA modified.png", dpi=300)
+
+
+
+
+
+
+
+
 
 
 
