@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 
+# Test plot viewer is working
 plt.plot([1,2,3])
 plt.show()
 
@@ -19,16 +20,6 @@ importlib.reload(fc)
 
 #fc.percentage(50, 100)
 #fc.iupac_to_dna('TNTM')
-
-# Human gDNA
-output = pd.DataFrame(data=fc.motifs_in_fasta('chr1-23+Y.fna', 'TNTC'))
-output.to_csv('output.csv')
-# Unreliable way to slice out chromosome numbers
-input_seq_iterator = SeqIO.parse('chr1-23+Y.fna', 'fasta')
-records = [record.id for record in input_seq_iterator]
-chr_name = [records[i][7:9] for i, j in enumerate(records)]
-output['Chromosome'] = chr_name # Append new column with chromosome numbers
-plt.bar(output['Chromosome'].values, output['Perc DNA modified (total)'].values)
 
 
 # Bacterial gDNA
@@ -162,12 +153,128 @@ fig.savefig("plots/gDNA length vs % gDNA modified.png", dpi=300)
 
 
 
+### Human gDNA/motif plots ###
+mots = ['TNTC', 'TNTM', 'TYT', 'TTTH']
+output = pd.DataFrame()
+for i, _ in enumerate(mots):
+	print("Counting sites for {0} motif".format(mots[i]))
+	df = pd.DataFrame(data=fc.motifs_in_fasta('downloaded_DNA/human_gdna_renamed.fa', str(mots[i])))
+	output = output.append(df)
+output.to_csv('output_human_gdna.csv')
+
+# Plotting
+
+# Colours for plotting. From Solarized palette
+colour_palette = [(211, 54, 130), (108, 113, 196), (38, 139, 210), (42, 161, 152)]
+plot_colours = colour_palette
+for i in range(len(colour_palette)):
+	r, g, b = colour_palette[i]
+	# Convert RGB (0, 255) to (0, 1) which matplotlib likes
+	plot_colours[i] = (r / 255, g / 255, b / 255)
+
+input_data = pd.read_csv("output_human_gdna.csv")
+
+fig, axes = plt.subplots(nrows=2, ncols=2, sharey=False, sharex=True, figsize=(12, 5))
+for i, ax in enumerate(axes.flatten()):
+	subset = input_data[input_data['motif seq'] == str(mots[i])]
+	ax.bar(subset['Record'], subset['Perc DNA modified (total)'], color=plot_colours[i])
+	ax.set_xticklabels(labels=subset['Record'], rotation=45, ha="right", rotation_mode="anchor")
+	ax.set_title('\'{0}\' motif'.format(mots[i]))
+	# Remove plot borders
+	ax.spines["top"].set_visible(False)
+	#ax.spines["bottom"].set_visible(False)
+	ax.spines["right"].set_visible(False)
+	#ax.spines["left"].set_visible(False)
+	# Tick marks
+	ax.get_yaxis().tick_left()
+	ax.tick_params(axis="both", which="both", bottom=False, left=False)
+	# Display yticks with intervals of 1. Alternative oneliner: ax.set_yticks(ax.get_yticks()[::2])
+	ax.set_ylim([0, 3])
+	ymin, ymax = ax.get_ylim()
+	ax.set_yticklabels(np.arange(ymin, ymax+1, 1, dtype=np.int))
+	#ax.set_ylabel('% gDNA modified')
+# fig.suptitle('This is the figure title')
+fig.text(0.0001, 0.5, '% gDNA modified', va='center', rotation='vertical') # Common Y axis label
+#plt.setp(axes[:, 0], ylabel='% gDNA modified') # Apply yaxis label only to plots in column 1
+fig.tight_layout(rect=[0, 0.03, 1, 0.9]) # Call tight_layout last. (left, bottom, right, top)
+
+
+matplotlib.use("TkAgg") # Backend to use for PyCharm interactive plots
+matplotlib.use("GTK3Agg") # Backend to use for savefig with properly scaled DPI
+fig.savefig("plots/human gDNA - all motifs", dpi=300)
+
+
+# Single human gDNA TNTC plot
+input_data = pd.read_csv("output_human_gdna.csv")
+
+fig, axes = plt.subplots(figsize=(10, 2.5))
+subset = input_data[input_data['motif seq'] == 'TNTC']
+axes.bar(subset['Record'], subset['Perc DNA modified (total)'], color=plot_colours[i])
+axes.set_xticklabels(labels=subset['Record'], rotation=45, ha="right", rotation_mode="anchor")
+axes.set_title('\'{0}\' motif'.format('TNTC'))
+# Remove plot borders
+axes.spines["top"].set_visible(False)
+axes.spines["right"].set_visible(False)
+# Tick marks
+axes.tick_params(axis="both", which="both", bottom=False, left=False)
+# Display yticks with intervals of 1. Alternative oneliner: ax.set_yticks(ax.get_yticks()[::2])
+axes.set_ylim([0, 2])
+ymin, ymax = axes.get_ylim()
+axes.set_yticks(np.arange(ymin, ymax+1, 1, dtype=np.int)) # Set the values of the ticks
+axes.set_yticklabels(np.arange(ymin, ymax+1, 1, dtype=np.int)) # Set the displayed values of the ticks
+#ax.set_ylabel('% gDNA modified')
+# fig.suptitle('This is the figure title')
+fig.text(0.0001, 0.5, '% gDNA modified', va='center', rotation='vertical') # Common Y axis label
+#plt.setp(axes[:, 0], ylabel='% gDNA modified') # Apply yaxis label only to plots in column 1
+fig.tight_layout(rect=[0, 0.03, 1, 0.9]) # Call tight_layout last. (left, bottom, right, top)
+
+matplotlib.use("TkAgg") # Backend to use for PyCharm interactive plots
+matplotlib.use("GTK3Agg") # Backend to use for savefig with properly scaled DPI
+fig.savefig("plots/human gDNA - TNTC only", dpi=300)
+
+
+# Modification of chromosomes vs length
+max(input_data['record length'])
+min(input_data['record length'])
+# Array of chromosome length in Mb
+np.arange(min(input_data['record length']), max(input_data['record length']), 10e6, dtype=np.int) / 1e6
 
 
 
+#linear_reg = LinearRegression()
+fig, axes = plt.subplots()
+subset = input_data[input_data['motif seq'] == 'TNTC']
+# Reshape data for LinearRegression()
+x = np.reshape(subset['record length'].values, (len(subset['record length'].values), 1))
+y = np.reshape(subset['Perc DNA modified (total)'].values, (len(subset['Perc DNA modified (total)'].values), 1))
+# Linear regression predict
+#linear_reg.fit(x, y)
+#y_predict = linear_reg.predict(x) # Prediction holder
+# Plot
+axes.scatter(x, y)
+#ax.plot(x, y_predict, color='red')  # Plot prediction
+# Format plot
+axes.set_title('\'{0}\' motif'.format('TNTC'))
+axes.spines["top"].set_visible(False)
+axes.spines["right"].set_visible(False)
+axes.get_yaxis().tick_left()
+axes.tick_params(axis="both", which="both", bottom=False, left=False)
+# Display yticks with intervals of 1. Alternative oneliner: ax.set_yticks(ax.get_yticks()[::2])
+axes.set_ylim([0, 3])
+ymin, ymax = axes.get_ylim()
+axes.set_yticks(np.arange(ymin, ymax+1, 1, dtype=np.int))
+axes.set_yticklabels(np.arange(ymin, ymax+1, 1, dtype=np.int))
+# # x axis format
+axes.set_xlim([40e6, 260e6])
+xmin, xmax = axes.get_xlim()
+axes.set_xticks(np.arange(xmin, xmax, 10e6, dtype=np.int))
+axes.set_xticklabels(np.arange(xmin, xmax, 10e6, dtype=np.int) / 1e6, rotation=45, ha="right", rotation_mode="anchor")
+fig.text(0.5, 0.04, 'gDNA length (Mb)', ha='center') # Common x axis label
+fig.text(0.01, 0.5, '% gDNA modified', va='center', rotation='vertical')  # Common Y axis label
+fig.tight_layout(rect=[0.02, 0.05, 1, 0.9]) # Call tight_layout last
 
-
-
+40e6
+250e6
 
 
 
