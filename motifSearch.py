@@ -239,8 +239,6 @@ min(input_data['record length'])
 # Array of chromosome length in Mb
 np.arange(min(input_data['record length']), max(input_data['record length']), 10e6, dtype=np.int) / 1e6
 
-
-
 #linear_reg = LinearRegression()
 fig, axes = plt.subplots()
 subset = input_data[input_data['motif seq'] == 'TNTC']
@@ -273,8 +271,51 @@ fig.text(0.5, 0.04, 'gDNA length (Mb)', ha='center') # Common x axis label
 fig.text(0.01, 0.5, '% gDNA modified', va='center', rotation='vertical')  # Common Y axis label
 fig.tight_layout(rect=[0.02, 0.05, 1, 0.9]) # Call tight_layout last
 
-40e6
-250e6
+
+### Comparing gDNA of Taq and human gDNA
+human_gdna = pd.read_csv("output_human_gdna.csv")
+bac_gdna = pd.read_csv("output.csv")
+np.mean(human_gdna['Perc DNA modified (total)'])
+
+# Subset the desired data for bacterial gDNA
+taq_gdna = bac_gdna[(bac_gdna['Record'] == 'T.aquaticus') & (bac_gdna['motif seq'] == 'TNTC')]
+
+# Creating new dataset for just Taq and human gDNA
+# Kinda hacky using values[0], but it works for now
+gdna_dict = {'Record': [taq_gdna['Record'].values[0], 'H.sapiens'],
+             'Perc DNA modified (total)': [taq_gdna['Perc DNA modified (total)'].values[0], np.mean(human_gdna['Perc DNA modified (total)'])]
+}
+
+# Plotting
+fig, axes = plt.subplots(figsize=(2, 3))
+axes.bar(gdna_dict['Record'], gdna_dict['Perc DNA modified (total)'], color=plot_colours[i])
+axes.set_xticklabels(labels=gdna_dict['Record'], rotation=45, ha="right", rotation_mode="anchor")
+axes.set_title('\'{0}\' motif'.format('TNTC'))
+# Remove plot borders
+axes.spines["top"].set_visible(False)
+axes.spines["right"].set_visible(False)
+# Tick marks
+axes.tick_params(axis="both", which="both", bottom=False, left=False)
+# Display yticks with intervals of 1. Alternative oneliner: ax.set_yticks(ax.get_yticks()[::2])
+axes.set_ylim([0, 2])
+ymin, ymax = axes.get_ylim()
+axes.set_yticks(np.arange(ymin, ymax+1, 1, dtype=np.int)) # Set the values of the ticks
+axes.set_yticklabels(np.arange(ymin, ymax+1, 1, dtype=np.int)) # Set the displayed values of the ticks
+#ax.set_ylabel('% gDNA modified')
+# fig.suptitle('This is the figure title')
+fig.text(0.0001, 0.5, '% gDNA modified', va='center', rotation='vertical') # Common Y axis label
+#plt.setp(axes[:, 0], ylabel='% gDNA modified') # Apply yaxis label only to plots in column 1
+fig.tight_layout(rect=[0, 0.03, 1, 0.9]) # Call tight_layout last. (left, bottom, right, top)
+
+matplotlib.use("TkAgg") # Backend to use for PyCharm interactive plots
+matplotlib.use("GTK3Agg") # Backend to use for savefig with properly scaled DPI
+fig.savefig("plots/Taq vs human gDNA - TNTC modification", dpi=300)
+
+
+
+
+
+
 
 
 
