@@ -84,6 +84,15 @@ def motifs_in_fasta(fasta, motif):
 
     return motif_data
 
+## motifs_in_fasta test
+# mots = ['TNTC', 'TNTM', 'TYT', 'TTTH']
+# output = pd.DataFrame()
+# for i, _ in enumerate(mots):
+# 	print("Counting sites for {0} motif".format(mots[i]))
+# 	df = pd.DataFrame(data=fc.motifs_in_fasta('downloaded_DNA/all-bac-renamed.fa', str(mots[i])))
+# 	output = output.append(df)
+# output.to_csv('output.csv')
+
 
 
 ### Gathering DNA functions
