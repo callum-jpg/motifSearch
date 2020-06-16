@@ -279,11 +279,14 @@ np.mean(human_gdna['Perc DNA modified (total)'])
 
 # Subset the desired data for bacterial gDNA
 taq_gdna = bac_gdna[(bac_gdna['Record'] == 'T.aquaticus') & (bac_gdna['motif seq'] == 'TNTC')]
+# Conditionally subset two record types corresponding to one motif seq
+taq_ecol_gdna = bac_gdna[((bac_gdna['Record'] == 'T.aquaticus') | (bac_gdna['Record'] == 'E.coli(K12)'))
+                    & (bac_gdna['motif seq'] == 'TNTC')]
 
 # Creating new dataset for just Taq and human gDNA
 # Kinda hacky using values[0], but it works for now
-gdna_dict = {'Record': [taq_gdna['Record'].values[0], 'H.sapiens'],
-             'Perc DNA modified (total)': [taq_gdna['Perc DNA modified (total)'].values[0], np.mean(human_gdna['Perc DNA modified (total)'])]
+gdna_dict = {'Record': [taq_ecol_gdna['Record'].values[0], taq_ecol_gdna['Record'].values[1], 'H.sapiens'],
+             'Perc DNA modified (total)': [taq_ecol_gdna['Perc DNA modified (total)'].values[0], taq_ecol_gdna['Perc DNA modified (total)'].values[1], np.mean(human_gdna['Perc DNA modified (total)'])]
 }
 
 # Plotting
@@ -309,7 +312,7 @@ fig.tight_layout(rect=[0, 0.03, 1, 0.9]) # Call tight_layout last. (left, bottom
 
 matplotlib.use("TkAgg") # Backend to use for PyCharm interactive plots
 matplotlib.use("GTK3Agg") # Backend to use for savefig with properly scaled DPI
-fig.savefig("plots/Taq vs human gDNA - TNTC modification", dpi=300)
+fig.savefig("plots/Taq, Ecol vs human gDNA - TNTC modification", dpi=300)
 
 
 
