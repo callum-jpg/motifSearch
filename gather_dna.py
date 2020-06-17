@@ -11,7 +11,9 @@ importlib.reload(fc)
 
 
 
-# Bacterial gDNA of interest with accession number
+# Bacterial gDNA of interest with RefSeq sequence
+# Gather accession numbers from NCBI 'assembly' database
+# For gDNA, select RefSeq that corresponds with the chromosome
 bac_gdna_seqs = {
     'T.aquaticus': 'NZ_CP010822.1',
     'EPEC': 'LT827011.1',
@@ -19,14 +21,51 @@ bac_gdna_seqs = {
     'M.tuberculosis': 'NC_000962.3',
     'P.aeruginosa': 'AE004091.2'
 }
+
 # Download a dictionary of dna
 for k, v in bac_gdna_seqs.items():
+    filename = k + '-gdna.fa'
+    fc.download_dna(v, filename)
+
+bac_gdna_seq_extra = {
+    **bac_gdna_seqs, # ** unpacks dict and adds key: value pairs and merges to dictionary
+    'D.compactum': 'NZ_AP018316.1',
+    'S.enterica': 'NC_003197.2',
+    'G.thermoleovorans': 'NZ_CP014335.1',
+    'B.naejangsanensis': 'NZ_CP015614.1',
+    'B.cereus': 'NZ_CP034551.1',
+    'C.abyssi': 'NZ_CP018099.1',
+    'B.diminuta': 'NZ_CP035093.1',
+    'V.cholerae': 'NZ_CP010812.1',
+    'N.canis': 'NZ_LR134313.1',
+    'T.scotoductus': 'NC_014974.1',
+    'G.violaceus': 'NC_005125.1',
+    'S.cyanosphaera': 'NC_019748.1',
+    'L.trevisanii': 'NZ_AP019840.1',
+    'A.giovannonii': 'NZ_CP042997.1',
+    'P.bacterium': 'NZ_CP036264.1',
+    'S.cyanobacteriorum': 'NZ_CP019633.1',
+    'P.mikurensis': 'NC_017080.1',
+    'R.baltica': 'NC_005027.1',
+    'L.pneumophila': 'NZ_LR134380.1'
+}
+#len(bac_gdna_seq_extra)
+
+# Pathogens
+# 'A.baumannii': 'NZ_CP046654.1',
+# 'K.pneumoniae': 'NC_016845.1',
+# 'E.hormaechei': 'NZ_CP017179.1'
+
+# Download a dictionary of dna
+for k, v in bac_gdna_seq_extra.items():
     filename = k + '-gdna.fa'
     fc.download_dna(v, filename)
 
 
 # Test for concatenate_fasta
 fc.concatenate_fasta('downloaded_DNA', 'all-bac-seq.fa')
+
+fc.concatenate_fasta('downloaded_DNA', 'all-bac-seq-extra.fa')
 
 
 
@@ -40,10 +79,13 @@ bac_gdna_seqs = {
 }
 fc.rename_fasta_id(bac_gdna_seqs, 'downloaded_DNA/all-bac-seq.fa', 'downloaded_DNA/all-bac-renamed.fa')
 
+fc.rename_fasta_id(bac_gdna_seq_extra, 'downloaded_DNA/all-bac-seq-extra.fa', 'downloaded_DNA/all-bac-extra-renamed.fa')
+
 fc.fasta_record_check('downloaded_DNA/all-bac-seq.fa')
 fc.fasta_record_check('downloaded_DNA/all-bac-renamed.fa')
 
-
+fc.fasta_record_check('downloaded_DNA/all-bac-seq-extra.fa')
+fc.fasta_record_check('downloaded_DNA/all-bac-extra-renamed.fa')
 
 # Human gDNA
 ## OLD CODE ##
