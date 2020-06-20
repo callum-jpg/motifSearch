@@ -372,3 +372,54 @@ for i, (k, v) in enumerate(test_dict.items()):
 plt.xlabel('Position (kb)', fontsize=20)
 plt.suptitle('Nucleotide distribution in K12 E. coli', fontsize=25)
 plt.show
+
+
+
+
+
+
+### Extra gDNA plots
+
+mots = ['TNTC', 'TNTM', 'TYT', 'TTTH']
+output = pd.DataFrame()
+for i, _ in enumerate(mots):
+	print("Counting sites for {0} motif".format(mots[i]))
+	df = pd.DataFrame(data=fc.motifs_in_fasta('downloaded_DNA/all-bac-extra-renamed.fa', str(mots[i])))
+	output = output.append(df)
+output.to_csv('output-extra.csv')
+
+input_data = pd.read_csv('output-extra.csv')
+
+max(input_data['Perc DNA modified (total)'])
+
+fig, axes = plt.subplots(nrows=2, ncols=2, sharey=False, sharex=True)
+for i, ax in enumerate(axes.flatten()):
+	subset = input_data[input_data['motif seq'] == str(mots[i])]
+	ax.bar(subset['Record'], subset['Perc DNA modified (total)'], color=plot_colours[i])
+	ax.set_xticklabels(labels=subset['Record'], rotation=45, ha="right", rotation_mode="anchor")
+	ax.set_title('\'{0}\' motif'.format(mots[i]))
+	# Remove plot borders
+	ax.spines["top"].set_visible(False)
+	#ax.spines["bottom"].set_visible(False)
+	ax.spines["right"].set_visible(False)
+	#ax.spines["left"].set_visible(False)
+	# Tick marks
+	ax.get_yaxis().tick_left()
+	ax.tick_params(axis="both", which="both", bottom=False, left=False)
+	# Display yticks with intervals of 1. Alternative oneliner: ax.set_yticks(ax.get_yticks()[::2])
+	ax.set_ylim([0, 6])
+	ymin, ymax = ax.get_ylim()
+	ax.set_yticks(np.arange(ymin, ymax+1, 1, dtype=np.int))
+	ax.set_yticklabels(np.arange(ymin, ymax+1, 1, dtype=np.int))
+	#ax.set_ylabel('% gDNA modified')
+# fig.suptitle('This is the figure title')
+fig.text(0.01, 0.5, '% gDNA modified', va='center', rotation='vertical') # Common Y axis label
+#plt.setp(axes[:, 0], ylabel='% gDNA modified') # Apply yaxis label only to plots in column 1
+fig.tight_layout(rect=[0, 0.03, 1, 0.9]) # Call tight_layout last
+
+
+
+axes.set_ylim([0, 2])
+ymin, ymax = axes.get_ylim()
+axes.set_yticks(np.arange(ymin, ymax+1, 1, dtype=np.int)) # Set the values of the ticks
+axes.set_yticklabels(np.arange(ymin, ymax+1, 1, dtype=np.int)) # Set the displayed values of the ticks
