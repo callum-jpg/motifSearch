@@ -13,3 +13,9 @@ __pycache__/
 /all-bac-corrected.fna
 /downloaded_DNA/
 /plots/
+
+matplotlib-subplot-one_only.py
+output.csv
+tests/downloaded_DNA/
+tests/tidied gather dna.py
+tests/tidied plotting.py
