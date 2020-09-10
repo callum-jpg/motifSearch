@@ -152,32 +152,6 @@ def fasta_record_check(filename):
 #fasta_record_check('downloaded_DNA/test.fa')
 
 
-
-# Combine multiple FASTA files into one
-def concatenate_fasta(dna_dir, output_filename):
-    """
-    Reads the contents of a directory for FASTA files ending in -gdna.fa and combines them into a
-    new .fa file in the same directory.
-    """
-    dirList = [i for i in os.listdir(dna_dir) if '-gdna.fa' in i]
-    save_path = dna_dir + os.path.sep + output_filename
-    # Empty list that will store all sequences
-    all_seq = []
-    if not os.path.isfile(save_path):
-        for files in dirList:
-            all_seq += [record for record in SeqIO.parse(dna_dir+os.path.sep+files, "fasta")]
-        SeqIO.write(all_seq, save_path, 'fasta')
-        # Count records in the file
-        num_records = [record.id for record in SeqIO.parse(dna_dir+os.path.sep+output_filename, 'fasta')]
-        print('{} saved in {} and contains {} records'.format(output_filename, save_path, len(num_records)))
-    else:
-        print('{} already exists'.format(output_filename))
-
-# Test for concatenate_fasta
-#concatenate_fasta('downloaded_DNA', 'all-bac-seq.fa')
-
-
-
 def rename_fasta_id(reference_dict, input_filename, output_filename):
     """
     Reads over a fasta file and replaces record.id
