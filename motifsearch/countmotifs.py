@@ -100,38 +100,43 @@ def motifs_in_fasta(fasta, motif):
 Entrez.email = "john.smith@john.com"
 
 
-def download_dna(id, filename):
-    """
-    Takes an NCBI accession number from the nucleotide database and downloads the DNA
-    in FASTA format. Saves as the given filename. Does not overwrite files with the same
-    name. Saves to downloaded_DNA directory in working directory.
+def download_dna(dict, filename):
+    '''
+    Takes an NCBI accession number from the assembly database and downloads the gDNA
+    in FASTA format. Input Sequences should be found in the values of a dictionary. 
+    Multiple items in a dictionary will yield a file with multiple DNA sequences. Does
+    not overwrite files. Saves to 'downloaded_DNA' in the current working directory.
+    
+    Saves as filename input. Remeber to include the desired path and .fa extention.
+    
+    >>> dna_dict = {
+        'E.coli(K12)': 'NC_000913.3',                    
+        }
+    >>> download_dna(dna_dict, 'downloaded_DNA/ecoli_k12_gdna.fa')
 
-    >>> download_dna('NC_000913.3', 'ecoli_k12_gdna.fa')
-    :param id:
-    :param filename:
-    :return:
-    """
+    '''
     save_dir = 'downloaded_DNA'
     if not os.path.isdir(save_dir):
         os.mkdir(save_dir)
     path = os.path.join(os.getcwd(), save_dir, filename)
     # Check if the same filename exists
     if not os.path.isfile(path):
-        # Fetch ID from Entrez NCBI in fasta format as a handle
-        # Handle is a wrapper around the text information retrived from Entrez/NCBI
-        with Entrez.efetch(db="nucleotide", id=id, rettype="fasta", retmode="text") as handle:
-            with open(path, "w") as output_handle:
-                # .read() reads the entire handle. .readline() would, obviously, read line by line
-                output_handle.write(handle.read())
-            print('\'{}\' saved in {}'.format(filename, path))
+        # Create empty list to store DNA
+        handle = []
+        for k, v in dict.items():
+            # Fetch DNA and append to list. Concatenates DNA sequences
+            handle.append(Entrez.efetch(db="nucleotide", id=v, rettype="fasta", retmode="text"))
+        
+        # Save elements in the DNA list to a single file
+        with open(path, 'w') as output:
+            for record in handle:
+                output.write(record.read())         
     else:
-        print('Filename \'{}\' already exists in {}'.format(filename, path))
+        print('File \'{}\' already exists in \'{}\''.format(filename, path))
 
-# Test for download_dna
-#id = 'NC_000913.3'
-#filename = 'test.fa'
-#download_dna(id, filename)
-
+    
+    
+    
 # Check record IDs and sequence length in a FASTA
 # Good for checking things have worked
 def fasta_record_check(filename):
