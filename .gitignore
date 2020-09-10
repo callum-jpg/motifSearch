@@ -19,3 +19,11 @@ output.csv
 tests/downloaded_DNA/
 tests/tidied gather dna.py
 tests/tidied plotting.py
+
+tests/Taq, Ecol vs human gDNA - TNTC modification.png
+tests/colours - common x+y - all numbers presented.png
+tests/gDNA length between species.png
+tests/gDNA length vs % gDNA modified.png
+tests/human gDNA - TNTC only.png
+tests/human gDNA - all motifs.png
+
