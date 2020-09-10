@@ -141,7 +141,7 @@ def fasta_record_check(filename):
     """
     Reads a FASTA file and gives a quick summary of the contents
     """
-    num_records = [record.description for record in SeqIO.parse(filename, 'fasta')]
+    num_records = [record.id for record in SeqIO.parse(filename, 'fasta')]
     print('{} contains {} records'.format(filename, len(num_records)))
     for record in SeqIO.parse(filename, 'fasta'):
         print('{} is {}bp long'.format(record.id, len(record.seq)))
