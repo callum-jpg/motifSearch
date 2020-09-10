@@ -135,15 +135,13 @@ def download_dna(dict, filename):
         print('File \'{}\' already exists in \'{}\''.format(filename, path))
 
     
-    
-    
 # Check record IDs and sequence length in a FASTA
 # Good for checking things have worked
 def fasta_record_check(filename):
     """
     Reads a FASTA file and gives a quick summary of the contents
     """
-    num_records = [record.id for record in SeqIO.parse(filename, 'fasta')]
+    num_records = [record.description for record in SeqIO.parse(filename, 'fasta')]
     print('{} contains {} records'.format(filename, len(num_records)))
     for record in SeqIO.parse(filename, 'fasta'):
         print('{} is {}bp long'.format(record.id, len(record.seq)))
@@ -167,7 +165,8 @@ def rename_fasta_id(reference_dict, input_filename, output_filename):
                     print('Record ID \'{}\' not found in reference dictionary. It has been excluded.'.format(record.id))
                 for k, v in reference_dict.items():
                     if record.id in v:
-                        record.id = k
+                        # Strip spaces so biopython can identify by id
+                        record.id = k.replace(' ', '')
                         SeqIO.write(record, output, 'fasta')
         num_records = [record.id for record in SeqIO.parse(output_filename, 'fasta')]
         print('\'{}\' created and contains {} records'.format(output_filename, len(num_records)))
@@ -183,3 +182,11 @@ def rename_fasta_id(reference_dict, input_filename, output_filename):
 #     'P.aeruginosa': 'AE004091.2'
 # }
 #rename_fasta_id(bac_gdna_seqs, 'downloaded_DNA/all-bac-seq.fa', 'downloaded_DNA/test.fa')
+        
+        
+        
+        
+        
+        
+        
+        
