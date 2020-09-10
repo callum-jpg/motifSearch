@@ -12,28 +12,22 @@ from motifsearch import countmotifs as ms
 bac_gdna_seqs = {
     'T.aquaticus': 'NZ_CP010822.1',
     'EPEC': 'LT827011.1',
-    'E.coli(K12)': 'NC_000913.3',
+    'E. coli (K12)': 'NC_000913.3',
     'M.tuberculosis': 'NC_000962.3',
     'P.aeruginosa': 'AE004091.2'
 }
 
+# Download dictionary of DNA sequences from NCBI
+ms.download_dna(bac_gdna_seqs, 'bacterial-gDNA.fa')
 
-# Download a dictionary of dna
-for k, v in bac_gdna_seqs.items():
-    filename = k + '-gdna.fa'
-    ms.download_dna(v, filename)
+# Rename the DNA sequence FASTA headers to match the key in the dictionary
+ms.rename_fasta_id(bac_gdna_seqs, 'downloaded_DNA/bacterial-gDNA.fa', 'downloaded_DNA/bacterial-gDNA-renamed.fa')
     
-    
-# Test for concatenate_fasta
-ms.concatenate_fasta('downloaded_DNA', 'all-bac-seq.fa')
-
-# Rename fasta sequences based on their key in bac_gdna_seqs
-ms.rename_fasta_id(bac_gdna_seqs, 'downloaded_DNA/all-bac-seq.fa', 'downloaded_DNA/all-bac-renamed.fa')
 
 #%% Checking the contents of the concatenated fasta file.
 
-ms.fasta_record_check('downloaded_DNA/all-bac-seq.fa')
-ms.fasta_record_check('downloaded_DNA/all-bac-renamed.fa')
+ms.fasta_record_check('downloaded_DNA/bacterial-gDNA.fa')
+ms.fasta_record_check('downloaded_DNA/bacterial-gDNA-renamed.fa')
 
 
 #%% Downloading human gDNA - autosomes only
@@ -63,21 +57,17 @@ human_chr = {
     "chr22": "NC_000022.11",
 }
 
-for k, v in human_chr.items():
-    filename = k + '-gdna.fa'
-    ms.download_dna(v, filename)
+# Download dictionary of human chromosome sequences from NCBI
+ms.download_dna(human_chr, 'human-gDNA.fa')
     
-
-ms.concatenate_fasta('downloaded_DNA/human-gdna', '1-22-hs-gdna.fa')
-
-ms.rename_fasta_id(human_chr, 'downloaded_DNA/human-gdna/1-22-hs-gdna.fa', 
-                   'downloaded_DNA/human-gdna/1-22-hs-gdna-renamed.fa')
+ms.rename_fasta_id(human_chr, 'downloaded_DNA/human-gDNA.fa', 
+                   'downloaded_DNA/human-gDNA-renamed.fa')
 
 #%% Checking the contents of the concatenated fasta file.
 
-ms.fasta_record_check('downloaded_DNA/human-gdna/1-22-hs-gdna.fa')
+ms.fasta_record_check('downloaded_DNA/human-gDNA.fa')
 
-ms.fasta_record_check('downloaded_DNA/human-gdna/1-22-hs-gdna-renamed.fa')
+ms.fasta_record_check('downloaded_DNA/human-gDNA-renamed.fa')
 
 
 
