@@ -61,8 +61,20 @@ class motifsearch:
         else:
             self.cols = 2
         
+        # Adjust figure height based on row count
+        if self.rows == 1:
+            figure_height = self.rows*3.5
+        else:
+            figure_height = self.rows*2
+        
+        # Adjust figure width based on number of cols
+        if self.cols == 1:
+            figure_width = 3.25
+        else:
+            figure_width = 7.5
+        
         fig, ax_ = plt.subplots(self.rows, self.cols, sharey=False, sharex=True,
-                                figsize=(7.5, self.rows*2))
+                                figsize=(figure_width, figure_height))
         axes = np.array(ax_)
         for i, ax in enumerate(axes.flatten()):
             self.subset = self.motif_data[self.motif_data['motif seq'] == str(motif[i])]
@@ -82,7 +94,7 @@ class motifsearch:
             ax.set_ylim([0, math.ceil(max(self.perc))])
             ymin, ymax = ax.get_ylim()
             ax.yaxis.set_ticks(np.arange(ymin, ymax+1, 1))  
-        fig.text(0.01, 0.5, '% gDNA modified', va='center', rotation='vertical') # Common Y axis label
+        fig.text(0.01, 0.55, '% gDNA modified', va='center', rotation='vertical') # Common Y axis label
         fig.tight_layout(rect=[0, 0.03, 1, 0.9]) # Call tight_layout last
         return fig
         

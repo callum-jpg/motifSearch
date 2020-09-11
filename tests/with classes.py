@@ -22,7 +22,7 @@ print(y)
 # %%
 from motifsearch.classmotifs import motifsearch
 
-mots = ['GATC', 'AATT', 'TAATC', 'CATTT', 'TAATC', 'CATTT', 'TAATC', 'CATTT']
+mots = ['GATC', 'GATC']
 
 motif = motifsearch()
 
