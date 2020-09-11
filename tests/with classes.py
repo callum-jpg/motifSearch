@@ -22,13 +22,19 @@ print(y)
 # %%
 from motifsearch.classmotifs import motifsearch
 
-mots = ['TNTC', 'TNTM', 'TYT', 'TTTH']
+mots = ['GATC', 'AATT', 'TAATC', 'CATTT', 'TAATC', 'CATTT', 'TAATC', 'CATTT']
 
 motif = motifsearch()
 
 y = motif.count('downloaded_DNA/bacterial-gDNA-renamed.fa', mots)
 
-motif.motif_bar1(mots)
+x = motif.motif_bar1(mots)
+
+
+#%%
+
+# Save the figure
+x.savefig("hello", dpi=300)
 
 
 #%%
@@ -47,20 +53,15 @@ else:
 print(test)
 
 #%%
-import matplotlib.pyplot as plt
 
-fig, axes = plt.subplots(nrows=1, ncols=1, sharey=False, sharex=True)
-y = np.array([axes])
-for i, j in enumerate(y):
-    print(i, j)
+test = ['tntnc']
+
+print(len(test))
     
     
 #%%
 
-fig, ax = plt.subplots(2, 2, sharey=False, sharex=True)
-axes = np.array(ax)
-for i, axes1, in enumerate(axes.flatten()):
-    print(i, axes1)
+print(y[['Record', 'Perc DNA modified (total)', 'motif seq']])
 
 
 #%% Theoritical use of classes

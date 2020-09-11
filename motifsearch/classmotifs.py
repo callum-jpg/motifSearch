@@ -51,13 +51,18 @@ class motifsearch:
         
     def motif_bar1(self, motif):
         
+        # Convert a str motif into a list element so the for loop works
         if type(motif) is str:
             motif = [motif]
         
         self.rows = math.ceil(len(motif)/2)
-        self.cols = 2
+        if len(motif) == 1:
+            self.cols = 1
+        else:
+            self.cols = 2
         
-        fig, ax_ = plt.subplots(self.rows, self.cols, sharey=False, sharex=True)
+        fig, ax_ = plt.subplots(self.rows, self.cols, sharey=False, sharex=True,
+                                figsize=(7.5, self.rows*2))
         axes = np.array(ax_)
         for i, ax in enumerate(axes.flatten()):
             self.subset = self.motif_data[self.motif_data['motif seq'] == str(motif[i])]
@@ -76,7 +81,10 @@ class motifsearch:
             # Round up to the nearest int for the highest percentage
             ax.set_ylim([0, math.ceil(max(self.perc))])
             ymin, ymax = ax.get_ylim()
-            ax.yaxis.set_ticks(np.arange(ymin, ymax+1, 1))    
+            ax.yaxis.set_ticks(np.arange(ymin, ymax+1, 1))  
+        fig.text(0.01, 0.5, '% gDNA modified', va='center', rotation='vertical') # Common Y axis label
+        fig.tight_layout(rect=[0, 0.03, 1, 0.9]) # Call tight_layout last
+        return fig
         
     
 # Useful code for getting Mb from bp ax.set_yticklabels([x/1000 for x in ax.get_yticks()])
