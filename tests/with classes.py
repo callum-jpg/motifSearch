@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 from motifsearch.classmotifs import motifsearch
-import numpy as np
 
 #%%
 # Counting motifs with classes
@@ -22,19 +21,61 @@ print(y)
 # %%
 from motifsearch.classmotifs import motifsearch
 
-mots = ['GATC', 'GATC']
+mots = ['GATC', 'GTCT', 'GGATC']
 
 motif = motifsearch()
 
 y = motif.count('downloaded_DNA/bacterial-gDNA-renamed.fa', mots)
 
-x = motif.motif_bar1(mots)
+x = motif.motif_bar(mots)
 
 
 #%%
 
 # Save the figure
 x.savefig("hello", dpi=300)
+
+#%%
+
+print([x for x in range(0, 3)])
+
+#%%
+import matplotlib.pyplot as plt
+
+fig, ax_ = plt.subplots(2, 2, sharey=False, sharex=True)
+# Make ax_ a 1/2D array, regardless of length
+axes = np.array(ax_)
+
+axes[0,1].remove()
+
+# Smarter removing of excess subplots?
+# position = np.array([[0, 1 ], [2, 3]])
+# #print(np.where(position==3))
+# np.where(position==3).remove()
+
+#%%
+import numpy as np
+
+position = np.array([[0, 1 ], [2, 3]])
+
+#print(np.where(position==3))
+
+x = np.where(position==3)
+
+print([i [0] for i in x])
+
+#%%
+
+mots = ['GATC', 'TNTC', 'CHC', 'TTTC']
+ncol = 2
+ncol = 2
+
+for i, j in enumerate(mots):
+    if i in range(0, len(mots) - 1):
+        print("Plotted {}".format(i))
+    else:
+        print("I'll delete subplot {}".format(i))
+        
 
 
 #%%
