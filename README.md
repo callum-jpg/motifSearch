@@ -4,5 +4,7 @@ For my project I'm working with a bacterial toxin that modifies TNTC motifs of s
 This script aims to answer these questions.
 
 ### To do:
-- [ ] Find number of TNTC motifs in the human genome
+- [x] Find number of TNTC motifs in the human genome
 - [ ] Map these motifs to genemap(correct terminology?)
+- [ ] Add feature to ensure minimum motif str length is >=3
+- [ ] Improve multiple subplot scaling for bar plot
