@@ -55,7 +55,8 @@ def motifs_in_fasta(fasta, motif):
                    "Total number of sites",
                    "Perc DNA modified (total)",
                    "motif seq",
-                   "record length"]
+                   "record length",
+                   "record length (Mb)"]
     # Populate dict with empty lists
     for i in output_cols:
         motif_data[i] = []
@@ -80,6 +81,7 @@ def motifs_in_fasta(fasta, motif):
                                                         (len(sequence) + len(rev_sequence))))
         motif_data[output_cols[5]].append(str(motif))
         motif_data[output_cols[6]].append(len(sequence))
+        motif_data[output_cols[7]].append(len(sequence)/1e6)
 
 
     return motif_data
