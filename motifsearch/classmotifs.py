@@ -47,9 +47,9 @@ class motifsearch:
         
         # Adjust figure width based on number of cols
         if self.cols == 1:
-            figure_width = 3.25
+            figure_width = len(set(input_data['Record'])) * 0.5
         else:
-            figure_width = 7.5
+            figure_width = (len(set(input_data['Record'])))
         
         fig, ax_ = plt.subplots(self.rows, self.cols, sharey=False, sharex=True,
                                 figsize=(figure_width, figure_height))
@@ -83,7 +83,8 @@ class motifsearch:
                 # np.array.
                 # Assuming an even grid (2x2, 4x4 etc), this functionality will be ok. 
                 axes[self.rows-1, self.cols-1].remove()
-        fig.text(0.01, 0.55, '% gDNA modified', va='center', rotation='vertical') # Common Y axis label
+        # figure_width*1e-4 hopefully scales OK with varying dataset sizes
+        fig.text(figure_width*1e-4, 0.55, '% gDNA modified', va='center', rotation='vertical') # Common Y axis label
         fig.tight_layout(rect=[0, 0.03, 1, 0.9]) # Call tight_layout last
         return fig
         
