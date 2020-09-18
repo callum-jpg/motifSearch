@@ -22,10 +22,10 @@ class motifsearch:
             print("Counting sites for {0} motif".format(motifs[i]))
             df = pd.DataFrame(data=ms.motifs_in_fasta(input_file, str(motifs[i])))
             output = output.append(df)
-        self.motif_data = output
+        #self.motif_data = output
         return output
         
-    def motif_bar(self, motif):
+    def motif_bar(self, input_data, motif):
         
         # Convert a str motif into a list element so the for loop works
         if type(motif) is str:
@@ -59,7 +59,7 @@ class motifsearch:
             # Plot bar only for subplots which has a corresponding motif
             # Delete unrequired subplot in the else statement
             if i in range(0, len(motif)):
-                self.subset = self.motif_data[self.motif_data['motif seq'] == str(motif[i])]
+                self.subset = input_data[input_data['motif seq'] == str(motif[i])]
                 self.species = self.subset['Record']
                 self.perc = self.subset['Perc DNA modified (total)']
                 ax.bar(self.species, self.perc)
