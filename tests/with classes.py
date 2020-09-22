@@ -104,25 +104,6 @@ plot.savefig("taq_ecol_human_counts.png", dpi=300)
 
 #%%
 
-oned = np.array([1,2,3])
-
-twod = np.array([[1,2,3],
-                 [4,5,6]])
-
-threed = np.array([[[1,2,3],
-                   [4,5,6]],
-              
-              [[7,8,9],
-              [10,11,12]]])
-
-print(np.shape(oned))
-
-print(np.shape(twod))
-
-print(np.shape(threed))
-
-#%%
-
 unique = ['T.acq', 'H.sap', 'M.tub', 'H.sap', 'M.tub']
 
 # Return unique values from list
