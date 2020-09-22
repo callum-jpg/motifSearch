@@ -5,12 +5,14 @@ from motifsearch.classmotifs import motifsearch
 # Counting motifs with classes
 from motifsearch.classmotifs import motifsearch
 
-#mots = ['GATC', 'GTCT', 'GGATC']
-mots = ['GATC']
+mots = ['TNTC', 'GTCT', 'GGATC']
+#mots = ['GATC']
 
 motif = motifsearch()
 
 y = motif.count('downloaded_DNA/bacterial-gDNA-renamed.fa', mots)
+
+y.to_csv('bac_counts.csv')
 
 x = motif.motif_bar(y, mots)
 
@@ -27,12 +29,17 @@ x.savefig("hello", dpi=300)
 from motifsearch.classmotifs import motifsearch
 from natsort import index_natsorted
 import numpy as np
+import pandas as pd
 
 mots = ['TNTC']
 
 motif = motifsearch()
 
 #human_counts = motif.count('downloaded_DNA/human-gdna/1-22-hs-gdna-renamed.fa', mots)
+
+human_counts.to_csv('human_counts.csv')
+
+human_counts = pd.read_csv('human_counts.csv')
 
 ## Order 'chr1:22' into their natural order
 # Key argument in sort_values allows for alternative sorting method to be applied
@@ -48,11 +55,72 @@ human_plot = motif.motif_bar(human_counts_sorted, mots)
 
 #%%
 
-chrs = human_counts['Record'].to_list()
+human_counts = pd.read_csv('human_counts.csv')
 
-print('NO KEY:', sorted(chrs))
+#%% 
 
-print('WITH KEY:', sorted(chrs, key=lambda x: np.argsort(index_natsorted(human_counts['Record']))))
+
+human_counts = pd.read_csv('human_counts.csv')
+
+bac_counts = pd.read_csv('bac_counts.csv')
+
+# Consolidate autosome data and find the average modification across chromosomes
+hs_data = {
+           "Record": ['H.sapiens'],
+           "Total complement sites": [sum(human_counts['Total complement sites'])],
+           "Total reverse complement sites": [sum(human_counts['Total reverse complement sites'])],
+           "Total number of sites": [sum(human_counts['Total number of sites'])],
+           "Perc DNA modified (total)": [np.mean(human_counts['Perc DNA modified (total)'])],
+           "motif seq": ['TNTC'],
+           "record length": [sum(human_counts['record length'])],
+           "record length (Mb)": [sum(human_counts['record length (Mb)'])]
+        }
+
+# Save dict as dataframe
+pd.DataFrame.from_dict(data=hs_data, orient='columns').to_csv('human_counts_summary.csv')
+
+
+taq_ecol_gdna = bac_counts[((bac_counts['Record'] == 'T.aquaticus') 
+                            | (bac_counts['Record'] == 'E.coli(K12)'))
+                    & (bac_counts['motif seq'] == 'TNTC')]
+
+
+hs_gdna = pd.read_csv('human_counts_summary.csv')
+
+taq_ecol_gdna.append(hs_gdna).to_csv('taq_ecol_human_gdna_counts.csv')
+
+taq_ecol_human = pd.read_csv('taq_ecol_human_gdna_counts.csv')
+
+
+motif = motifsearch()
+motif.motif_bar(taq_ecol_human, 'TNTC')
+
+#%%
+
+plot = motif.motif_bar(taq_ecol_human, 'TNTC', width=2, height=3)
+
+# Save the figure
+plot.savefig("taq_ecol_human_counts.png", dpi=300)
+
+#%%
+
+oned = np.array([1,2,3])
+
+twod = np.array([[1,2,3],
+                 [4,5,6]])
+
+threed = np.array([[[1,2,3],
+                   [4,5,6]],
+              
+              [[7,8,9],
+              [10,11,12]]])
+
+print(np.shape(oned))
+
+print(np.shape(twod))
+
+print(np.shape(threed))
+
 #%%
 
 unique = ['T.acq', 'H.sap', 'M.tub', 'H.sap', 'M.tub']

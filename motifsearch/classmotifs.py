@@ -25,7 +25,7 @@ class motifsearch:
         #self.motif_data = output
         return output
         
-    def motif_bar(self, input_data, motif):
+    def motif_bar(self, input_data, motif, width=None, height=None):
         
         # Convert a str motif into a list element so the for loop works
         if type(motif) is str:
@@ -38,18 +38,29 @@ class motifsearch:
             self.cols = 1
         else:
             self.cols = 2
-        
-        # Adjust figure height based on row count
-        if self.rows == 1:
-            figure_height = self.rows*3.5
-        else:
-            figure_height = self.rows*2
-        
-        # Adjust figure width based on number of cols
-        if self.cols == 1:
+            
+        if width != None:
+            figure_width = width
+        elif self.cols == 1:
             figure_width = len(set(input_data['Record'])) * 0.5
         else:
             figure_width = (len(set(input_data['Record'])))
+            
+        if height != None:
+            figure_height = height 
+        # Adjust figure height based on row count
+        elif self.rows == 1:
+            figure_height = self.rows*0.5
+        else:
+            figure_height = self.rows*2
+        
+        # Colours for plotting. From Solarized palette
+        colour_palette = [(42, 161, 152), (38, 139, 210), (108, 113, 196), (211, 54, 130)]
+        plot_colours = colour_palette
+        for i in range(len(colour_palette)):
+        	r, g, b = colour_palette[i]
+        	# Convert RGB (0, 255) to (0, 1) which matplotlib likes
+        	plot_colours[i] = (r / 255, g / 255, b / 255)
         
         fig, ax_ = plt.subplots(self.rows, self.cols, sharey=False, sharex=True,
                                 figsize=(figure_width, figure_height))
@@ -62,7 +73,7 @@ class motifsearch:
                 self.subset = input_data[input_data['motif seq'] == str(motif[i])]
                 self.species = self.subset['Record']
                 self.perc = self.subset['Perc DNA modified (total)']
-                ax.bar(self.species, self.perc)
+                ax.bar(self.species, self.perc, color=plot_colours[i])
                 # Customise plot
                 ax.set_xticklabels(labels=self.species, rotation=45, ha="right", rotation_mode="anchor")
                 ax.set_title('\'{0}\' motif'.format(motif[i]))
