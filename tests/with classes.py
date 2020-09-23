@@ -16,6 +16,8 @@ y.to_csv('bac_counts.csv')
 
 x = motif.motif_bar(y, mots)
 
+motif.motif_bar_lengths(y)
+
 
 #%%
 
@@ -95,12 +97,19 @@ taq_ecol_human = pd.read_csv('taq_ecol_human_gdna_counts.csv')
 motif = motifsearch()
 motif.motif_bar(taq_ecol_human, 'TNTC')
 
+
 #%%
 
 plot = motif.motif_bar(taq_ecol_human, 'TNTC', width=2, height=3)
 
 # Save the figure
 plot.savefig("taq_ecol_human_counts.png", dpi=300)
+
+#%% plotting gDNA length
+
+plot = motif.motif_bar_lengths(taq_ecol_human, 2.5, 3)
+
+plot.savefig("taq_ecol_human_lengths.png", dpi=300)
 
 #%%
 
