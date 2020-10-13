@@ -115,6 +115,7 @@ class motifsearch:
         else:
             figure_height = math.ceil(max(dna_lengths))*0.8
     
+        # If there is a >50 Mb gap in recorded gDNA lengths, plot y as log
         if max(dna_lengths) - min(dna_lengths) > 50:
             log_y = True
         else:
@@ -183,10 +184,10 @@ class motifsearch:
                 y = np.reshape(subset['Perc DNA modified (total)'].values, (len(subset['Perc DNA modified (total)'].values), 1))
                 	# Linear regression predict
                 linear_reg.fit(x, y)
-                y_predict = linear_reg.predict(x) # Prediction holder
+                y_pred = linear_reg.predict(x) # Prediction holder
                 	# Plot
                 ax.scatter(x, y, color=self.plot_colours[i])
-                ax.plot(x, y_predict, color='red')
+                ax.plot(x, y_pred, color='red')
 
                 # Customise plot
                 ax.set_title('\'{0}\' motif'.format(motif[i]))
@@ -221,19 +222,3 @@ class motifsearch:
         return fig
         
         
-        
-    
-# for i, j in enumerate(mots):
-#     if i in range(0, len(mots) - 1):
-#         print("Plotted {}".format(i))
-#     else:
-#         print("I'll delete subplot {}".format(i))
-        
-    
-# Useful code for getting Mb from bp ax.set_yticklabels([x/1000 for x in ax.get_yticks()])
-    
-
-	# Display yticks with intervals of 1. Alternative oneliner: ax.set_yticks(ax.get_yticks()[::2])
-# 	ax.set_ylim([0, 3])
-# 	ymin, ymax = ax.get_ylim()
-# 	ax.set_yticklabels(np.arange(ymin, ymax+1, 1, dtype=np.int))
