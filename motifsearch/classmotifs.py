@@ -50,7 +50,7 @@ class motifsearch:
         if width != None:
             figure_width = width
         elif cols == 1:
-            figure_width = len(set(input_data['Record'])) * 0.5
+            figure_width = len(set(input_data['Record'])) * 0.7
         else:
             figure_width = (len(set(input_data['Record'])))
             
@@ -60,7 +60,7 @@ class motifsearch:
         elif rows == 1:
             figure_height = rows*0.5
         else:
-            figure_height = rows*2
+            figure_height = rows*2.5
 
         
         fig, ax_ = plt.subplots(rows, cols, sharey=False, sharex=True,
@@ -118,12 +118,12 @@ class motifsearch:
         if width != None:
             figure_width = width
         else:
-            figure_width = len(set(input_data['Record']))*0.8
+            figure_width = len(set(input_data['Record']))*0.6
             
         if height != None:
             figure_height = height 
         else:
-            figure_height = math.ceil(max(dna_lengths))*0.7
+            figure_height = math.ceil(max(dna_lengths))*0.6
     
         # If there is a >50 Mb gap in recorded gDNA lengths, plot y as log
         if max(dna_lengths) - min(dna_lengths) > 50:
