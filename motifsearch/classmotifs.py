@@ -76,7 +76,7 @@ class motifsearch:
                 perc = subset['Perc DNA modified (total)']
                 ax.bar(species, perc, color=self.plot_colours[i])
                 # Customise plot
-                ax.set_xticklabels(labels=species, rotation=45, ha="right", rotation_mode="anchor")
+                ax.set_xticklabels(labels=species, rotation=45, ha="right", rotation_mode="anchor", fontstyle='italic')
                 ax.set_title('\'{0}\' motif'.format(motif[i]))
                 # Remove plot borders    
                 ax.spines["top"].set_visible(False)
@@ -85,9 +85,19 @@ class motifsearch:
                 ax.tick_params(axis="both", which="both", bottom=False, left=False)
                 # Display yticks with intervals of 1. Alternative oneliner: ax.set_yticks(ax.get_yticks()[::2])
                 # Round up to the nearest int for the highest percentage
-                ax.set_ylim([0, math.ceil(max(perc))])
-                ymin, ymax = ax.get_ylim()
-                ax.yaxis.set_ticks(np.arange(ymin, ymax+1, 1))  
+                # ax.set_ylim([0, math.ceil(max(perc))])
+                # ymin, ymax = ax.get_ylim()
+                # ax.yaxis.set_ticks(np.arange(ymin, ymax+1, 1))  
+                if max(perc) < 1:
+                    # For modifications below 1, find rescale the y axis
+                    upper_bound = np.round(max(perc)*1.5, 1)
+                    ax.set_ylim([0, upper_bound])
+                    ymin, ymax = ax.get_ylim()
+                    np.arange(ymin, ymax, upper_bound)
+                else:
+                    ax.set_ylim([0, math.ceil(max(perc))])
+                    ymin, ymax = ax.get_ylim()
+                    ax.yaxis.set_ticks(np.arange(ymin, ymax+1, 1))  
             else:
                 # I don't like this solution for removing a sub plot
                 # But since the nrow/col is fixed at 2 you can assume that, assuming an odd number
@@ -108,12 +118,12 @@ class motifsearch:
         if width != None:
             figure_width = width
         else:
-            figure_width = (len(set(input_data['Record'])))
+            figure_width = len(set(input_data['Record']))*0.8
             
         if height != None:
             figure_height = height 
         else:
-            figure_height = math.ceil(max(dna_lengths))*0.8
+            figure_height = math.ceil(max(dna_lengths))*0.7
     
         # If there is a >50 Mb gap in recorded gDNA lengths, plot y as log
         if max(dna_lengths) - min(dna_lengths) > 50:
@@ -126,7 +136,7 @@ class motifsearch:
                                 figsize=(figure_width, figure_height))
         ax.bar(species, dna_lengths, color=self.plot_colours[2])
         # Customise plot
-        ax.set_xticklabels(labels=species, rotation=45, ha="right", rotation_mode="anchor")
+        ax.set_xticklabels(labels=species, rotation=45, ha="right", rotation_mode="anchor", fontstyle='italic')
         # ax.set_title('DNA sequence lengths (Mb)')
         # Remove plot borders    
         ax.spines["top"].set_visible(False)
