@@ -93,11 +93,11 @@ class motifsearch:
                     upper_bound = np.round(max(perc)*1.5, 1)
                     ax.set_ylim([0, upper_bound])
                     ymin, ymax = ax.get_ylim()
-                    np.arange(ymin, ymax, upper_bound)
+                    ax.yaxis.set_ticks(np.arange(ymin, ymax + ymax*0.2, 0.1)) # upper tick to be 20% over data max
                 else:
                     ax.set_ylim([0, math.ceil(max(perc))])
                     ymin, ymax = ax.get_ylim()
-                    ax.yaxis.set_ticks(np.arange(ymin, ymax+1, 1))  
+                    ax.yaxis.set_ticks(np.arange(ymin, ymax+1, 1))
             else:
                 # I don't like this solution for removing a sub plot
                 # But since the nrow/col is fixed at 2 you can assume that, assuming an odd number
@@ -213,7 +213,7 @@ class motifsearch:
                     upper_bound = np.round(max(y)*1.5, 1)
                     ax.set_ylim([0, upper_bound])
                     ymin, ymax = ax.get_ylim()
-                    np.arange(ymin, ymax, upper_bound)
+                    ax.yaxis.set_ticks(np.arange(ymin, ymax + ymax*0.2, 0.1)) # upper tick to be 20% over data max
                 else:
                     ax.set_ylim([0, math.ceil(max(y))])
                     ymin, ymax = ax.get_ylim()
