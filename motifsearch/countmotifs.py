@@ -3,6 +3,7 @@ import os
 from Bio import Seq
 from Bio import SeqIO
 from Bio import Entrez
+import re
 
 IUPAC_dict = Seq.IUPAC.IUPACData.ambiguous_dna_values
 
@@ -71,7 +72,7 @@ def motifs_in_fasta(fasta, motif):
             total_sites += sequence.count(motif_variations[j])
             total_sites_rev += rev_sequence.count(motif_variations[j])
 
-        motif_data[output_cols[0]].append(record.id) # Create a new dict entry to hold FASTA record name
+        motif_data[output_cols[0]].append(re.sub(r"\.(?=\S)", ". ", record.id)) # Create a new dict entry to hold FASTA record name
 
         # Add counts to dict
         motif_data[output_cols[1]].append(total_sites)
