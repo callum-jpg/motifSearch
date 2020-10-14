@@ -4,6 +4,20 @@
 
 **motifSearch** is a python package intended for the end-to-end analysis of motif frequency within genomic DNA. This package offers a means for downloading, measuring motif frequency, and visualising the resulting data.
 
+
+[Example plots](## Plotting motif data)
+
+### Installation with linux
+```
+# Clone this repo
+git clone https://github.com/callum-jpg/motifSearch.git
+cd motifsearch
+
+# Install with pip
+pip install -e  .
+```
+
+
 ### Downloading data
 The NCBI accession number (RefSeq sequence) for the genome of a given species can be searched in the assembly database on NCBI [here](https://www.ncbi.nlm.nih.gov/assembly)
 ```
