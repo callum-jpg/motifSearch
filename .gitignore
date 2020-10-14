@@ -1,3 +1,4 @@
+.gitignore
 /k12-gdna.fna
 __pycache__/
 /taq-gdna.fna
@@ -26,4 +27,6 @@ tests/gDNA length between species.png
 tests/gDNA length vs % gDNA modified.png
 tests/human gDNA - TNTC only.png
 tests/human gDNA - all motifs.png
+bac_counts.csv
+taq_ecol_human_lengths
 
