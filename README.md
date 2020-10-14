@@ -7,24 +7,26 @@
 
 [Example plots](#example-plots)
 
-### Installation with linux
+### Installation guide with linux
 ```
-# Clone this repo
+# Clone the repo
 git clone https://github.com/callum-jpg/motifSearch.git
+
+# Change to the motifsearch directory
 cd motifsearch
 
 # Install with pip
 pip install -e  .
 ```
 
-### Downloading data
+## Downloading data
 The NCBI accession number (RefSeq sequence) for the genome of a given species can be searched in the assembly database on NCBI [here](https://www.ncbi.nlm.nih.gov/assembly)
 ```
 from motifsearch import countmotifs as ms
 
 # Create a python dictionary containing the desired species name [key] and genomic DNA RefSeq sequence [value]
 bac_gdna_seqs = {
-    'E. coli (K-12)': 'NC_000913.3',
+    'E. coli: 'NC_000913.3',
     'T. aquaticus': 'NZ_CP010822.1',
     'M. tuberculosis': 'NC_000962.3',
     'P. aeruginosa': 'AE004091.2',
@@ -39,7 +41,7 @@ ms.download_dna(bac_gdna_seqs, 'bacterial-gDNA.fa')
 ms.rename_fasta_id(bac_gdna_seqs, 'downloaded_DNA/bacterial-gDNA.fa', 'downloaded_DNA/bacterial-gDNA-renamed.fa')
 ```
 
-### Count motif frequency
+## Count motif frequency
 
 ```
 from motifsearch import motifSearch
