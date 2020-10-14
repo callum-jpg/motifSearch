@@ -5,7 +5,7 @@
 **motifSearch** is a python package intended for the end-to-end analysis of motif frequency within genomic DNA. This package offers a means for downloading, measuring motif frequency, and visualising the resulting data.
 
 
-[Example plots](## Plotting motif data)
+[Example plots](##-Plotting-motif-data)
 
 ### Installation with linux
 ```
