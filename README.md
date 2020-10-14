@@ -26,7 +26,7 @@ from motifsearch import countmotifs as ms
 
 # Create a python dictionary containing the desired species name [key] and genomic DNA RefSeq sequence [value]
 bac_gdna_seqs = {
-    'E. coli: 'NC_000913.3',
+    'E. coli': 'NC_000913.3',
     'T. aquaticus': 'NZ_CP010822.1',
     'M. tuberculosis': 'NC_000962.3',
     'P. aeruginosa': 'AE004091.2',
