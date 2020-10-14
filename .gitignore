@@ -28,4 +28,7 @@ tests/human gDNA - TNTC only.png
 tests/human gDNA - all motifs.png
 bac_counts.csv
 taq_ecol_human_lengths.png
+taq_ecol_human_counts.png
+taq_ecol_human_gdna_counts.csv
+
 
