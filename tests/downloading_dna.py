@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
-
-from Bio import SeqIO
 from motifsearch import countmotifs as ms
-
 
 #%% Downloading bacterial gDNA fasta sequences
 
@@ -10,7 +7,7 @@ from motifsearch import countmotifs as ms
 # Gather accession numbers from NCBI 'assembly' database
 # For gDNA, select RefSeq that corresponds with the chromosome
 bac_gdna_seqs = {
-    'E. coli (K-12)': 'NC_000913.3',
+    'E. coli': 'NC_000913.3',
     'T. aquaticus': 'NZ_CP010822.1',
     'M. tuberculosis': 'NC_000962.3',
     'P. aeruginosa': 'AE004091.2',
