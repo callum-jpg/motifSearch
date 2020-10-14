@@ -3,9 +3,6 @@ from motifsearch.classmotifs import motifsearch
 
 #%%
 # Counting motifs with classes
-#from motifsearch.classmotifs import motifsearch
-
-import pandas as pd
 
 from motifsearch import motifSearch
 
@@ -14,11 +11,11 @@ mots = ['TNTC', 'GTCT', 'GGATC', 'CCTA']
 
 motif = motifSearch()
 
-#motif_df = motif.count('downloaded_DNA/bacterial-gDNA-renamed.fa', mots)
+motif_df = motif.count('bacterial-gDNA-renamed.fa', mots)
 
 #motif_df.to_csv('bac_counts.csv')
 
-motif_df = pd.read_csv('bac_counts.csv')
+#motif_df = pd.read_csv('bac_counts.csv')
 
 motif_barplot = motif.motif_bar(motif_df, mots)
 

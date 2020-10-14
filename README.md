@@ -37,7 +37,6 @@ ms.download_dna(bac_gdna_seqs, 'bacterial-gDNA.fa')
 
 # Rename the DNA sequence FASTA headers to match the key in the dictionary
 ms.rename_fasta_id(bac_gdna_seqs, 'downloaded_DNA/bacterial-gDNA.fa', 'downloaded_DNA/bacterial-gDNA-renamed.fa')
-
 ```
 
 ### Count motif frequency
@@ -54,7 +53,6 @@ ms = motifSearch()
 # Select source DNA file and count frequency of desired motifs
 motif_df = ms.count('downloaded_DNA/bacterial-gDNA-renamed.fa', motifs)
 motif_df.to_csv('bacterial_motif_counts.csv')
-
 ```
 
 ## Plotting motif data
@@ -64,7 +62,6 @@ motif_df.to_csv('bacterial_motif_counts.csv')
 ```
 # Plot motif frequencies for desired motifs of all species in dataframe
 ms.motif_bar(motif_df, motifs)
-
 ```
 <p align="left">
   <img src="img/motifsearch-bar-plot.png", width=700>
@@ -75,7 +72,6 @@ ms.motif_bar(motif_df, motifs)
 ```
 # Plot genomic DNA lengths
 motif_bar_lengths(motif_df)
-
 ```
 
 <p align="left">
