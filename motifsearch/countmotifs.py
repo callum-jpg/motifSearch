@@ -87,19 +87,9 @@ def motifs_in_fasta(fasta, motif):
 
     return motif_data
 
-## motifs_in_fasta test
-# mots = ['TNTC', 'TNTM', 'TYT', 'TTTH']
-# output = pd.DataFrame()
-# for i, _ in enumerate(mots):
-# 	print("Counting sites for {0} motif".format(mots[i]))
-# 	df = pd.DataFrame(data=fc.motifs_in_fasta('downloaded_DNA/all-bac-renamed.fa', str(mots[i])))
-# 	output = output.append(df)
-# output.to_csv('output.csv')
-
-
 
 ### Gathering DNA functions
-
+# Change to your email
 Entrez.email = "john.smith@john.com"
 
 
@@ -149,9 +139,6 @@ def fasta_record_check(filename):
     for record in SeqIO.parse(filename, 'fasta'):
         print('{} is {}bp long'.format(record.id, len(record.seq)))
 
-# Test for fasta_record_check
-#fasta_record_check('downloaded_DNA/test.fa')
-
 
 def rename_fasta_id(reference_dict, input_filename, output_filename):
     """
@@ -176,16 +163,6 @@ def rename_fasta_id(reference_dict, input_filename, output_filename):
     else:
         print('\'{}\' already exists'.format(output_filename))
 
-# Test for rename_fasta_id
-# bac_gdna_seqs = {
-#     'T.aquaticus': 'NZ_CP010822.1',
-#     'EPEC': 'LT827011.1',
-#     'E.coli(K12)': 'NC_000913.3',
-#     'M.tuberculosis': 'NC_000962.3',
-#     'P.aeruginosa': 'AE004091.2'
-# }
-#rename_fasta_id(bac_gdna_seqs, 'downloaded_DNA/all-bac-seq.fa', 'downloaded_DNA/test.fa')
-        
         
         
         
