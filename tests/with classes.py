@@ -3,26 +3,46 @@ from motifsearch.classmotifs import motifsearch
 
 #%%
 # Counting motifs with classes
-from motifsearch.classmotifs import motifsearch
+#from motifsearch.classmotifs import motifsearch
 
-mots = ['TNTC', 'GTCT', 'GGATC']
+import pandas as pd
+
+from motifsearch import motifSearch
+
+mots = ['TNTC', 'GTCT', 'GGATC', 'CCTA']
 #mots = ['GATC']
 
-motif = motifsearch()
+motif = motifSearch()
 
-y = motif.count('downloaded_DNA/bacterial-gDNA-renamed.fa', mots)
+#motif_df = motif.count('downloaded_DNA/bacterial-gDNA-renamed.fa', mots)
 
-y.to_csv('bac_counts.csv')
+#motif_df.to_csv('bac_counts.csv')
 
-x = motif.motif_bar(y, mots)
+motif_df = pd.read_csv('bac_counts.csv')
 
-motif.motif_bar_lengths(y)
+motif_barplot = motif.motif_bar(motif_df, mots)
+
+motif.motif_bar_lengths(motif_df)
+
+
+#%% Linear regression
+
+motif.count_vs_length(motif_df, mots)
+
+
+#%% Saving example plots
+
+motif.motif_bar(motif_df, mots).savefig('img/motifsearch-bar-plot', bbox_inches = 'tight', dpi=300)
+
+motif.motif_bar_lengths(motif_df).savefig('img/motifsearch-bar-plot-lengths', bbox_inches = 'tight', dpi=300)
+
+motif.count_vs_length(motif_df, mots).savefig('img/motifsearch-lin-reg', bbox_inches = 'tight', dpi=300)
 
 
 #%%
 
 # Save the figure
-x.savefig("hello", dpi=300)
+motif_barplot.savefig("hello", dpi=300)
 
 
 #%%
@@ -39,7 +59,7 @@ motif = motifsearch()
 
 #human_counts = motif.count('downloaded_DNA/human-gdna/1-22-hs-gdna-renamed.fa', mots)
 
-human_counts.to_csv('human_counts.csv')
+# human_counts.to_csv('human_counts.csv')
 
 human_counts = pd.read_csv('human_counts.csv')
 
@@ -54,6 +74,13 @@ human_counts = pd.read_csv('human_counts.csv')
 human_counts_sorted = human_counts.sort_values(by='Record', key=lambda x: np.argsort(index_natsorted(human_counts['Record'])))
 
 human_plot = motif.motif_bar(human_counts_sorted, mots)
+
+#%% SEM of autosome modification
+import numpy as np
+
+human_std = np.std(human_counts['Perc DNA modified (total)'])
+
+print(human_std)
 
 #%%
 
@@ -107,7 +134,7 @@ plot.savefig("taq_ecol_human_counts.png", dpi=300)
 
 #%% plotting gDNA length
 
-plot = motif.motif_bar_lengths(taq_ecol_human, 2.5, 3)
+plot = motif.motif_bar_lengths(taq_ecol_human, 2, 3)
 
 plot.savefig("taq_ecol_human_lengths.png", dpi=300)
 

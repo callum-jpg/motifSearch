@@ -10,11 +10,12 @@ from motifsearch import countmotifs as ms
 # Gather accession numbers from NCBI 'assembly' database
 # For gDNA, select RefSeq that corresponds with the chromosome
 bac_gdna_seqs = {
-    'T.aquaticus': 'NZ_CP010822.1',
-    'EPEC': 'LT827011.1',
-    'E. coli (K12)': 'NC_000913.3',
-    'M.tuberculosis': 'NC_000962.3',
-    'P.aeruginosa': 'AE004091.2'
+    'E. coli (K-12)': 'NC_000913.3',
+    'T. aquaticus': 'NZ_CP010822.1',
+    'M. tuberculosis': 'NC_000962.3',
+    'P. aeruginosa': 'AE004091.2',
+    'S. aureus': 'NC_007795.1',
+    'S. enterica': 'NC_003197.2'
 }
 
 # Download dictionary of DNA sequences from NCBI
