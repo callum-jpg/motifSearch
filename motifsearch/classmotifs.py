@@ -7,7 +7,7 @@ import math
 from sklearn.linear_model import LinearRegression
 
 
-class motifsearch:
+class motifSearch:
     
     def __init__(self):
         # Colours for plotting. From Solarized palette
