@@ -87,7 +87,7 @@ count_vs_length(motif_df, motitfs)
 ```
 
 <p align="left">
-  <img src="img/motifsearch-lin-reg.png", width=600>
+  <img src="img/motifsearch-lin-reg-extended.png", width=600>
 </p>
 
 
