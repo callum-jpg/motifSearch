@@ -12,7 +12,7 @@ setup(name='motifSearch',
       'biopython==1.77',
       'numpy>=1.18.1',
       'pandas==1.1.2',
-      'scikit-learn==0.23.2',
+      'scikit-learn==1.0.1',
       'matplotlib==3.1.3'
       ]
      )
